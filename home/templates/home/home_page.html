@@ -1,13 +1,15 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% load wagtailcore_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-    <div>
-        <h1>{{ page.title|richtext }}</h1>
-        <p>{{ page.body|richtext }}</p>
+    <div class="container">
+        <div class="section has-text-centered">
+            <h1 class="title is-2">{{ page.title|richtext }}</h1>
+            <p>{{ page.body|richtext }}</p>
+        </div>
     </div>
 
 {% endblock %}
