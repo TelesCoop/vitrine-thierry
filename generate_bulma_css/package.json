@@ -1,0 +1,19 @@
+{
+  "name": "generate_bulma_css",
+  "version": "1.0.0",
+  "description": "generate bulma css",
+  "main": "vitrine_thierry.sass",
+  "scripts": {
+    "css-build": "node-sass vitrine_thierry.sass ../vitrine_thierry/static/css/bulma.vitrine_thierry.css",
+    "minify": "minify ../vitrine_thierry/static/css/bulma.vitrine_thierry.css > ../vitrine_thierry/static/css/bulma.vitrine_thierry.min.css"
+  },
+  "author": "TelesCoop.fr",
+  "license": "MIT",
+  "devDependencies": {
+    "bulma": "^0.9.3",
+    "node-sass": "^7.0.1"
+  },
+  "dependencies": {
+    "minify": "^8.0.4"
+  }
+}

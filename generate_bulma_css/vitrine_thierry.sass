@@ -1,0 +1,60 @@
+// bulma colors
+$black: #0D1A26
+$blue: #7290AB
+$blue-bis: #E1EBF5
+$cyan: #40B2F2
+$grey: #98A3AC
+
+// derived colors
+//for the color in nav and footer
+$primary: $blue
+//for the color in the background
+$light: $blue-bis
+$link: $cyan
+//for the contact page
+$info: $grey
+
+// custom colors
+$gallery-yellow: #F5F4E1
+$gallery-purpule: #EDE1F5
+$gallery-orange: #F5ECE1
+$gallery-blue: #E1EBF5
+$gallery-cyan: #E1F5F2
+$gallery-green: #E1F5E2
+$gallery-red: #F5E1E1
+@import "node_modules/bulma/sass/utilities/functions"
+$gallery-yellow-invert: findColorInvert($gallery-yellow)
+$gallery-purpule-invert: findColorInvert($gallery-purpule)
+$gallery-orange-invert: findColorInvert($gallery-orange)
+$gallery-blue-invert: findColorInvert($gallery-blue)
+$gallery-cyan-invert: findColorInvert($gallery-cyan)
+$gallery-green-invert: findColorInvert($gallery-green)
+$gallery-red-invert: findColorInvert($gallery-red)
+$custom-colors: ("gallery-yellow": ($gallery-yellow, $gallery-yellow-invert), "gallery-purpule": ($gallery-purpule, $gallery-purpule-invert), "gallery-orange": ($gallery-orange, $gallery-orange-invert), "gallery-blue": ($gallery-blue, $gallery-blue-invert), "gallery-cyan": ($gallery-cyan, $gallery-cyan-invert), "gallery-green": ($gallery-green, $gallery-green-invert), "gallery-red": ($gallery-red, $gallery-red-invert))
+// Text colors
+$text: $black
+$title-color: $text
+$content-heading-color: $text
+$label-color: $text
+
+// Import only what you need from Bulma
+@import "node_modules/bulma/sass/utilities/_all"
+@import "node_modules/bulma/sass/base/_all"
+@import "node_modules/bulma/sass/helpers/color"
+@import "node_modules/bulma/sass/helpers/typography"
+@import "node_modules/bulma/sass/helpers/spacing"
+@import "node_modules/bulma/sass/helpers/flexbox"
+@import "node_modules/bulma/sass/elements/button"
+@import "node_modules/bulma/sass/elements/container"
+@import "node_modules/bulma/sass/elements/title"
+@import "node_modules/bulma/sass/elements/image"
+@import "node_modules/bulma/sass/elements/content"
+@import "node_modules/bulma/sass/form/_all"
+@import "node_modules/bulma/sass/components/navbar"
+@import "node_modules/bulma/sass/components/modal"
+@import "node_modules/bulma/sass/components/card"
+@import "node_modules/bulma/sass/components/breadcrumb"
+@import "node_modules/bulma/sass/components/tabs"
+@import "node_modules/bulma/sass/layout/section"
+@import "node_modules/bulma/sass/layout/footer"
+@import "node_modules/bulma/sass/grid/columns"

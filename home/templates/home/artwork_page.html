@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-artworkpage{% endblock %}
+
+{% block content %}
+    <div>
+        <h1> {{ page.title|richtext }} </h1>
+        <div>
+            <p>Cliquez sur un élément pour filtrer les dispositifs</p>
+            {%for gallery in galleries%}
+                <button>
+                    {{gallery.name}}
+                </button>
+            {% endfor %}
+        </div>
+        <div>
+            <h2>Les Oeuvres</h2>
+            <div>
+                {%for artwork in artworks%}
+                    <div>
+                        <h3>{{artwork.name}}</h3>
+                        <p>{{artwork.short_description}}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
