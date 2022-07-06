@@ -19,6 +19,16 @@ from model_utils.models import TimeStampedModel
 SIMPLE_RICH_TEXT_FIELD_FEATURE = ["bold", "italic", "link", "ol", "ul"]
 
 
+class Color(models.TextChoices):
+    COLOR_BLUE = "gallery-blue", "Bleue"
+    COLOR_PURPULE = "gallery-purpule", "Violet"
+    COLOR_ORANGE = "gallery-orange", "Orange"
+    COLOR_CYAN = "gallery-cyan", "Cyan"
+    COLOR_GREEN = "gallery-green", "Vert"
+    COLOR_YELLOW = "gallery-yellow", "Jaune"
+    COLOR_RED = "gallery-red", "Rouge"
+
+
 class HomePage(Page):
     # HomePage can be created only on the root
     parent_page_types = ["wagtailcore.Page"]
@@ -71,9 +81,20 @@ class FreeBodyField(models.Model):
 @register_snippet
 class Gallery(models.Model):
     name = models.CharField(verbose_name="Nom", max_length=100)
+    color = models.CharField(
+        max_length=32,
+        choices=Color.choices,
+        default=Color.COLOR_BLUE,
+        help_text="Choisir la couleur de la galerie",
+    )
 
     def __str__(self):
         return self.name
+
+    panels = [
+        FieldPanel("name"),
+        StreamFieldPanel("color", classname="full"),
+    ]
 
     class Meta:
         verbose_name = "Gallerie"
