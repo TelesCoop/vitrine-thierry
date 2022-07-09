@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags artwork_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="section has-text-centered">
+            <h1 class="title is-2"> {{ page.title|richtext }} </h1>
+            <div class="container">
+                <p class="is-size-6">Cliquez sur un élément pour filtrer les dispositifs</p>
+                <div id="mybuttonContainer">
+                    <button class="is-outlined button is-rounded is-primary is-active" onclick="filterSelection('all')">
+                        Tout
+                    </button>
+                    {%for gallery in galleries%}
+                        <button class="button is-rounded is-{{gallery.color}} has-text-primary" onclick="filterSelection('{{gallery.name}}')">
+                            {{gallery.name}}
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="title is-3">Les Oeuvres</h2>
+                <div class="columns is-6 is-multiline">
+                    {%for artwork in artworks%}
+                        <a class="filterDiv {%for gallery in artwork.galleries.all%} {{gallery.name}} {% endfor %}" href="{% artwork_page_url page artwork %}">
+                            <div class="card has-background-white-ter">
+                                <div class="card-image">
+                                    {% image artwork.image min-400x300 as artwork_image %}
+                                    {% comment %} Todo : find the right place of the image.url {% endcomment %}
+                                    <figure class="image is-4by3">
+                                            <img src='{{ artwork_image.url }}' alt="Oeuvre image">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="title is-5">{{artwork.name}}</h3>
+                                    <p class="is-size-6">{{artwork.short_description}}</p>
+                                    {%for gallery in artwork.galleries.all%}
+                                        <p class="button is-rounded is-{{gallery.color}}">
+                                            {{gallery.name}}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        {% comment %} TODO : Change className and fonctions name {% endcomment %}
+        filterSelection("all")
+        function filterSelection(name) {
+            var x, i;
+            x = document.getElementsByClassName("filterDiv");
+            if (name == "all") name = "";
+            for (i = 0; i < x.length; i++) {
+                w3RemoveClass(x[i], " column is-one-third");
+                if (x[i].className.indexOf(name) > -1) w3AddClass(x[i], " column is-one-third");
+            }
+        }
+
+        function w3AddClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+            }
+        }
+
+        function w3RemoveClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                while (arr1.indexOf(arr2[i]) > -1) {
+                arr1.splice(arr1.indexOf(arr2[i]), 1);
+                }
+            }
+            element.className = arr1.join(" ");
+        }
+
+        // Add active class to the current button (highlight it)
+        var buttonContainer = document.getElementById("mybuttonContainer");
+        var buttons = buttonContainer.getElementsByClassName("button");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener("click", function(){
+                var current = document.getElementsByClassName("is-active");
+                current[0].className = current[0].className.replace(" is-active", "");
+                this.className += " is-active";
+            });
+        }
+    </script>
+{% endblock %}

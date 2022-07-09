@@ -1,0 +1,24 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div>
+    {% for block in body %}
+        {% if block.block_type == 'heading' %}
+            <h2>{{ block.value }}</h2>       
+        {% elif block.block_type == 'pdf' %}
+        <div>
+            <div>
+                <p>Document PDF</p>
+                <h4>{{ block.value.title }}</h4>
+            </div>
+            <a href="{{ block.value.url }}" target="_blank">Télécharger le PDF</a>
+        </div>
+        {% elif block.block_type == 'image' %}
+            {% image block.value original as image %}
+            <img src="{{ image.url }}" alt="">
+        {% elif block.block_type == 'richtext' %}
+            <section>
+                {% include_block block.value %}
+            </section>
+        {% endif %}
+    {% endfor %}
+</div>

@@ -5,46 +5,10 @@
 {% block content %}
     <div class="container">
         <div class="section has-text-centered">
-            <h1 class="title is-2"> {{ page.title|richtext }} </h1>
-            <div class="container">
-                <p class="is-size-6">Cliquez sur un élément pour filtrer les dispositifs</p>
-                <div id="mybuttonContainer">
-                    <button class="is-outlined button is-rounded is-primary is-active" onclick="filterSelection('all')">
-                        Tout
-                    </button>
-                    {%for gallery in galleries%}
-                        <button class="button is-rounded is-{{gallery.color}} has-text-primary" onclick="filterSelection('{{gallery.name}}')">
-                            {{gallery.name}}
-                        </button>
-                    {% endfor %}
-                </div>
-            </div>
+            <h1 class="title is-2"> {{ artwork.name }} </h1>
+
             <div class="section">
-                <h2 class="title is-3">Les Oeuvres</h2>
-                <div class="columns is-6 is-multiline">
-                    {%for artwork in artworks%}
-                        <div class="filterDiv {%for gallery in artwork.galleries.all%} {{gallery.name}} {% endfor %}">
-                            <div class="card has-background-white-ter">
-                                <div class="card-image">
-                                    {% image artwork.image min-400x300 as artwork_image %}
-                                    {% comment %} Todo : find the right place of the image.url {% endcomment %}
-                                    <figure class="image is-4by3">
-                                            <img src='{{ artwork_image.url }}' alt="Oeuvre image">
-                                    </figure>
-                                </div>
-                                <div class="card-content">
-                                    <h3 class="title is-5">{{artwork.name}}</h3>
-                                    <p class="is-size-6">{{artwork.short_description}}</p>
-                                    {%for gallery in artwork.galleries.all%}
-                                        <p class="button is-rounded is-{{gallery.color}}">
-                                            {{gallery.name}}
-                                        </p>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                {% include "components/free_body.html" with body=artwork.body %}
             </div>
         </div>
     </div>

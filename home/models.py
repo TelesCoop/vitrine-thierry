@@ -12,6 +12,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from model_utils.models import TimeStampedModel
 
@@ -76,6 +77,38 @@ class FreeBodyField(models.Model):
 
     class Meta:
         abstract = True
+
+
+class ArtworksPage(RoutablePageMixin, Page):
+    parent_page_types = ["HomePage"]
+    subpage_types: List[str] = []
+    max_count_per_parent = 1
+
+    content_panels = Page.content_panels
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["galleries"] = Gallery.objects.all()
+        context["artworks"] = Artwork.objects.all()
+        return context
+
+    @route(r"^(.*)/$", name="artwork")
+    def access_artwork_page(self, request, artwork_slug):
+        artwork = Artwork.objects.get(slug=artwork_slug)
+        return self.render(
+            request,
+            context_overrides={
+                "artwork": artwork,
+                "home_page": HomePage.objects.get(),
+                "artworks_page": ArtworksPage.objects.get(),
+                "other_news_list": Artwork.objects.exclude(id=artwork.id)[:3],
+            },
+            template="home/artwork_page.html",
+        )
+
+    class Meta:
+        verbose_name = "Page des galleries"
+        verbose_name_plural = "Pages des galleries"
 
 
 @register_snippet
@@ -144,21 +177,3 @@ class Artwork(index.Indexed, TimeStampedModel, FreeBodyField):
         verbose_name_plural = "Oeuvres"
         verbose_name = "Oeuvre"
         ordering = ["-created"]
-
-
-class ArtworkPage(Page):
-    parent_page_types = ["HomePage"]
-    subpage_types: List[str] = []
-    max_count_per_parent = 1
-
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
-        context["galleries"] = Gallery.objects.all()
-        context["artworks"] = Artwork.objects.all()
-        return context
-
-    content_panels = Page.content_panels
-
-    class Meta:
-        verbose_name = "Page des galleries"
-        verbose_name_plural = "Pages des oeuvres"
