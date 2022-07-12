@@ -147,7 +147,7 @@ class Artwork(index.Indexed, TimeStampedModel, FreeBodyField):
         Gallery, blank=True, verbose_name="Galleries", related_name="artworks"
     )
     short_description = models.CharField(
-        verbose_name="Description courte", max_length=510
+        verbose_name="Description courte", max_length=256
     )
     image = models.ForeignKey(
         "wagtailimages.Image",

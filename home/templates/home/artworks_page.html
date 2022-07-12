@@ -26,18 +26,21 @@
                 <div class="columns is-6 is-multiline">
                     {%for artwork in artworks%}
                         <a class="artwork-filtered {%for gallery in artwork.galleries.all%} {{gallery.name}} {% endfor %}" href="{% artwork_page_url page artwork %}">
-                            <div class="card has-background-white-ter">
+                            <div class="card has-background-white-ter" style="height: 100%">
                                 <div class="card-image">
                                     {% image artwork.image min-400x300 as artwork_image %}
                                     {% comment %} Todo : find the right settings for the width and height of the image {% endcomment %}
-                                    <figure class="image is-4by3">
-                                            <img src='{{ artwork_image.url }}' alt="Oeuvre image">
+                                    <figure class="image" style="height: 200px;">
+                                            <img src='{{ artwork_image.url }}' alt="Oeuvre image" style="height: 100%; object-fit: cover;">
                                     </figure>
                                 </div>
-                                <div class="card-content has-text-primary">
-                                    <h3 class="title is-5 has-text-primary-dark has-text-weight-bold">{{artwork.name}}</h3>
-                                    <p class="is-size-6 artwork-description">{{artwork.short_description}}</p>
-                                    <div class="has-text-centered mt-3">
+                                {% comment %} TODO : make is-flex working {% endcomment %}
+                                <div class="card-content has-text-primary is-flex is-flex-direction-column is-justify-content-space-between" style="height: calc(100% - 200px); display: flex;">
+                                    <div>
+                                        <h3 class="title is-5 has-text-primary-dark has-text-weight-bold">{{artwork.name}}</h3>
+                                        <p class="is-size-6 artwork-description">{{artwork.short_description}}</p>
+                                    </div>
+                                    <div class="has-text-centered mt-3 is-flex-wrap-wrap" style="display: flex; gap: 0.5rem;">
                                         {%for gallery in artwork.galleries.all%}
                                         <p class="button is-rounded is-{{gallery.color}}">
                                             {{gallery.name}}
