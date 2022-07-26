@@ -4,8 +4,9 @@
 
 {% block content %}
     <div class="container">
-        <div class="section has-text-centered">
-            <h1 class="title is-2"> {{ artwork.name }} </h1>
+        <div class="section">
+            <a href="/galleries/">Retour</a>
+            <h1 class="title is-2 has-text-centered"> {{ artwork.name }} </h1>
 
             <div class="section">
                 {% include "components/free_body.html" with body=artwork.body %}

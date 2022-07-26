@@ -13,14 +13,14 @@
                             Tout
                         </button>
                         {%for gallery in galleries%}
-                            <button class="button is-rounded is-{{gallery.color}} has-text-primary mx-3" onclick="filterArtworks('{{gallery.name}}')">
+                            <button class="button is-rounded is-{{gallery.color}} has-text-primary mx-3 my-1" onclick="filterArtworks('{{gallery.name}}')">
                                 {{gallery.name}}
                             </button>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-            <hr>
+            <hr class="is-hidden-mobile">
             <div class="section">
                 <h2 class="title is-3 has-text-centered has-text-weight-semibold has-text-primary-dark">Les Oeuvres</h2>
                 <div class="columns is-6 is-multiline">
@@ -109,7 +109,7 @@
     <style>
         hr {
             background-color: rgb(13 26 38 / 71%);
-            margin: 5.5rem 24rem 0rem;
+            margin: 2.5rem 20rem 0rem;
             height: 1px;
         }
     </style>

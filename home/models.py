@@ -101,7 +101,7 @@ class ArtworksPage(RoutablePageMixin, BannerPage):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["galeries"] = Gallery.objects.all()
+        context["galleries"] = Gallery.objects.all()
         context["artworks"] = Artwork.objects.all()
         return context
 
@@ -122,6 +122,41 @@ class ArtworksPage(RoutablePageMixin, BannerPage):
     class Meta:
         verbose_name = "Page des galeries"
         verbose_name_plural = "Pages des galeries"
+
+
+class PresentationPage(RoutablePageMixin, BannerPage):
+    parent_page_types = ["HomePage"]
+    subpage_types: List[str] = []
+    max_count_per_parent = 1
+
+    body = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Introduction du bloc des ressources",
+    )
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        verbose_name="Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        image = PresentationPage.objects.all().get().image
+        context["image_presentation"] = image.file.url if image else ""
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+        FieldPanel("image"),
+    ]
+
+    class Meta:
+        verbose_name = "Page de presentation"
 
 
 @register_snippet
