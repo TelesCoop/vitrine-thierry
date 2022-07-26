@@ -10,7 +10,7 @@
                 <p>{{ page.body|richtext }}</p>
             </div>
             <div class="column">
-                <figure style="height: 700px;">
+                <figure style="max-height: 700px;">
                     <img src='{{ image_presentation }}' alt="Presentation image">
                 </figure>
             </div>
@@ -30,10 +30,5 @@
                 height: 350px!important;
             }
         }
-        {% comment %} @media screen and (max-width: 1024px) {
-            .container {
-                max-width: 768px;
-            }
-        } {% endcomment %}
     </style>
 {% endblock %}
