@@ -8,10 +8,12 @@ from wagtail.core import blocks
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from model_utils.models import TimeStampedModel
@@ -30,7 +32,18 @@ class Color(models.TextChoices):
     COLOR_RED = "gallery-red", "Rouge"
 
 
-class HomePage(Page):
+class BannerPage(Page):
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        navbar_banner = BannerSetting.objects.all().get().navbar_banner
+        context["banner_url"] = navbar_banner.file.url if navbar_banner else ""
+        return context
+
+    class Meta:
+        abstract = True
+
+
+class HomePage(BannerPage):
     # HomePage can be created only on the root
     parent_page_types = ["wagtailcore.Page"]
 
@@ -79,7 +92,7 @@ class FreeBodyField(models.Model):
         abstract = True
 
 
-class ArtworksPage(RoutablePageMixin, Page):
+class ArtworksPage(RoutablePageMixin, BannerPage):
     parent_page_types = ["HomePage"]
     subpage_types: List[str] = []
     max_count_per_parent = 1
@@ -88,7 +101,7 @@ class ArtworksPage(RoutablePageMixin, Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["galleries"] = Gallery.objects.all()
+        context["galeries"] = Gallery.objects.all()
         context["artworks"] = Artwork.objects.all()
         return context
 
@@ -107,8 +120,8 @@ class ArtworksPage(RoutablePageMixin, Page):
         )
 
     class Meta:
-        verbose_name = "Page des galleries"
-        verbose_name_plural = "Pages des galleries"
+        verbose_name = "Page des galeries"
+        verbose_name_plural = "Pages des galeries"
 
 
 @register_snippet
@@ -130,7 +143,7 @@ class Gallery(models.Model):
     ]
 
     class Meta:
-        verbose_name = "Gallerie"
+        verbose_name = "Galerie"
 
 
 @register_snippet
@@ -144,7 +157,7 @@ class Artwork(index.Indexed, TimeStampedModel, FreeBodyField):
         default="",
     )
     galleries = models.ManyToManyField(
-        Gallery, blank=True, verbose_name="Galleries", related_name="artworks"
+        Gallery, blank=True, verbose_name="Galeries", related_name="artworks"
     )
     short_description = models.CharField(
         verbose_name="Description courte", max_length=256
@@ -161,7 +174,7 @@ class Artwork(index.Indexed, TimeStampedModel, FreeBodyField):
     panels = [
         FieldPanel("name"),
         FieldPanel("short_description"),
-        FieldPanel("galleries", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("galeries", widget=forms.CheckboxSelectMultiple),
         FieldPanel("image"),
     ] + FreeBodyField.panels
 
@@ -177,3 +190,22 @@ class Artwork(index.Indexed, TimeStampedModel, FreeBodyField):
         verbose_name_plural = "Oeuvres"
         verbose_name = "Oeuvre"
         ordering = ["-created"]
+
+
+@register_setting
+class BannerSetting(BaseSetting):
+    navbar_banner = models.ForeignKey(
+        "wagtailimages.Image",
+        verbose_name="Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        ImageChooserPanel("navbar_banner"),
+    ]
+
+    class Meta:
+        verbose_name = "Banière-image"
