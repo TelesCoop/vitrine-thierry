@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+    <div class="container my-4">
+        <h1 class="title is-2 has-text-centered">{{ page.title|richtext }}</h1>
+        <p>{{ page.body|richtext }}</p>
+    </div>
+
+{% endblock %}

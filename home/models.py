@@ -51,7 +51,7 @@ class HomePage(BannerPage):
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Introduction du bloc des ressources",
+        verbose_name="Contenu de la page d'accueil",
     )
 
     content_panels = Page.content_panels + [
@@ -60,6 +60,109 @@ class HomePage(BannerPage):
 
     class Meta:
         verbose_name = "Page d'Accueil"
+
+
+class PresentationPage(RoutablePageMixin, BannerPage):
+    parent_page_types = ["HomePage"]
+    subpage_types: List[str] = []
+    max_count_per_parent = 1
+
+    body = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Contenu de la page de présentation",
+    )
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        verbose_name="Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        image = PresentationPage.objects.all().get().image
+        context["image_presentation"] = image.file.url if image else ""
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+        FieldPanel("image"),
+    ]
+
+    class Meta:
+        verbose_name = "Page de presentation"
+
+
+class WorkExperiencePage(RoutablePageMixin, BannerPage):
+    parent_page_types = ["HomePage"]
+    subpage_types: List[str] = []
+    max_count_per_parent = 1
+
+    body = RichTextField(
+        null=True,
+        blank=True,
+        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+        verbose_name="Introduction de la page parcours",
+    )
+
+    parcours_block_data = StreamField(
+        [
+            (
+                "chapters",
+                blocks.StructBlock(
+                    [
+                        ("subtitle", blocks.CharBlock(label="Sous titre")),
+                        (
+                            "steps",
+                            blocks.ListBlock(
+                                blocks.StructBlock(
+                                    [
+                                        (
+                                            "date",
+                                            blocks.CharBlock(
+                                                label="Date",
+                                                null=True,
+                                                blank=True,
+                                            ),
+                                        ),
+                                        (
+                                            "richtext",
+                                            blocks.RichTextBlock(
+                                                label="Description",
+                                                features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
+                                            ),
+                                        ),
+                                    ],
+                                    label_format="{date}",
+                                    label="Les différentes étapes de ton parcours",
+                                )
+                            ),
+                        ),
+                    ],
+                    label_format="{subtitle}",
+                    label="Parties de ton parcours",
+                ),
+            )
+        ],
+        blank=True,
+        verbose_name="Membres du Comité - contenu",
+    )
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+        StreamFieldPanel("parcours_block_data"),
+    ]
+
+    class Meta:
+        verbose_name = "Page de presentation"
 
 
 class FreeBodyField(models.Model):
@@ -122,41 +225,6 @@ class ArtworksPage(RoutablePageMixin, BannerPage):
     class Meta:
         verbose_name = "Page des galeries"
         verbose_name_plural = "Pages des galeries"
-
-
-class PresentationPage(RoutablePageMixin, BannerPage):
-    parent_page_types = ["HomePage"]
-    subpage_types: List[str] = []
-    max_count_per_parent = 1
-
-    body = RichTextField(
-        null=True,
-        blank=True,
-        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Introduction du bloc des ressources",
-    )
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        verbose_name="Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
-        image = PresentationPage.objects.all().get().image
-        context["image_presentation"] = image.file.url if image else ""
-        return context
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body"),
-        FieldPanel("image"),
-    ]
-
-    class Meta:
-        verbose_name = "Page de presentation"
 
 
 @register_snippet
