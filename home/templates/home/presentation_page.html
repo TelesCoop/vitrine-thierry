@@ -6,7 +6,7 @@
     <div class="container is-fluid my-4">
         <div class="columns is-align-items-center">
             <div class="column">
-                <h1 class="title is-2">{{ page.title|richtext }}</h1>
+                <h1 class="title is-2 has-text-centered">{{ page.title|richtext }}</h1>
                 <p>{{ page.body|richtext }}</p>
             </div>
             <div class="column">
@@ -22,6 +22,7 @@
 {% block extra_css %}
     <style>
         figure > img {
+            max-height: 700px;
             height: 100%;
             object-fit: cover;
         }
