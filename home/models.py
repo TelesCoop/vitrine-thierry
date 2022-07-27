@@ -7,7 +7,12 @@ from django.utils.text import slugify
 from wagtail.core import blocks
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    StreamFieldPanel,
+    TabbedInterface,
+    ObjectList,
+)
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -35,7 +40,7 @@ class Color(models.TextChoices):
 class BannerPage(Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        navbar_banner = BannerSetting.objects.all().get().navbar_banner
+        navbar_banner = BannerSetting.objects.all().first().navbar_banner
         context["banner_url"] = navbar_banner.file.url if navbar_banner else ""
         return context
 
@@ -57,6 +62,9 @@ class HomePage(BannerPage):
     content_panels = Page.content_panels + [
         FieldPanel("body", classname="full"),
     ]
+
+    # Admin tabs list (Remove promotion and settings tabs)
+    edit_handler = TabbedInterface([ObjectList(content_panels, heading="Content")])
 
     class Meta:
         verbose_name = "Page d'Accueil"
@@ -93,6 +101,13 @@ class PresentationPage(RoutablePageMixin, BannerPage):
         FieldPanel("image"),
     ]
 
+    # Admin tabs list (Remove promotion and settings tabs)
+    edit_handler = TabbedInterface([ObjectList(content_panels, heading="Content")])
+
+    def save(self, *args, **kwargs):
+        self.slug = "qui-suis-je"
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "Page de presentation"
 
@@ -115,7 +130,7 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
                 "chapters",
                 blocks.StructBlock(
                     [
-                        ("subtitle", blocks.CharBlock(label="Sous titre")),
+                        ("title", blocks.CharBlock(label="Titre")),
                         (
                             "steps",
                             blocks.ListBlock(
@@ -125,8 +140,7 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
                                             "date",
                                             blocks.CharBlock(
                                                 label="Date",
-                                                null=True,
-                                                blank=True,
+                                                required=False,
                                             ),
                                         ),
                                         (
@@ -139,21 +153,25 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
                                     ],
                                     label_format="{date}",
                                     label="Les différentes étapes de ton parcours",
-                                )
+                                ),
+                                label="Etapes",
                             ),
                         ),
                     ],
-                    label_format="{subtitle}",
+                    label_format="{title}",
                     label="Parties de ton parcours",
                 ),
             )
         ],
         blank=True,
-        verbose_name="Membres du Comité - contenu",
+        verbose_name="Parcours",
     )
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
+        context["parcours_list"] = (
+            WorkExperiencePage.objects.all().get().parcours_block_data
+        )
         return context
 
     content_panels = Page.content_panels + [
@@ -161,8 +179,15 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
         StreamFieldPanel("parcours_block_data"),
     ]
 
+    # Admin tabs list (Remove promotion and settings tabs)
+    edit_handler = TabbedInterface([ObjectList(content_panels, heading="Content")])
+
+    def save(self, *args, **kwargs):
+        self.slug = ""
+        super().save(*args, **kwargs)
+
     class Meta:
-        verbose_name = "Page de presentation"
+        verbose_name = "Page du parcours"
 
 
 class FreeBodyField(models.Model):
@@ -222,6 +247,13 @@ class ArtworksPage(RoutablePageMixin, BannerPage):
             template="home/artwork_page.html",
         )
 
+    # Admin tabs list (Remove promotion and settings tabs)
+    edit_handler = TabbedInterface([ObjectList(content_panels, heading="Content")])
+
+    def save(self, *args, **kwargs):
+        self.slug = "galeries"
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "Page des galeries"
         verbose_name_plural = "Pages des galeries"
@@ -277,7 +309,7 @@ class Artwork(index.Indexed, TimeStampedModel, FreeBodyField):
     panels = [
         FieldPanel("name"),
         FieldPanel("short_description"),
-        FieldPanel("galeries", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("galleries", widget=forms.CheckboxSelectMultiple),
         FieldPanel("image"),
     ] + FreeBodyField.panels
 

@@ -2,16 +2,18 @@
 {% load wagtailsettings_tags %}
 
 <nav class="navbar has-background-primary is-flex-direction-column" role="navigation" aria-label="main navigation">
+    {%if banner_url%}
     <div class"navbar-item">
         <figure class="image" style="height: 270px;">
             <img src='{{ banner_url }}' alt="Banière image" style="height: 100%; object-fit: cover;">
         </figure>
     </div>
+    {%endif%}
     <div class="navbar-start mx-auto">
         <a class="navbar-item has-text-primary-light px-5" href="/">
             ACCUEIL
         </a>
-        <a class="navbar-item has-text-primary-light px-5" href="/presentation/">
+        <a class="navbar-item has-text-primary-light px-5" href="/qui-suis-je/">
             PRESENTATION
         </a>
         <a class="navbar-item has-text-primary-light px-5" href="/mon-parcours/">

@@ -6,6 +6,37 @@
     <div class="container my-4">
         <h1 class="title is-2 has-text-centered">{{ page.title|richtext }}</h1>
         <p>{{ page.body|richtext }}</p>
+        <hr>
+        <div>
+            <div class="tabs">
+                <ul>
+                    {%for block in parcours_list %}
+                        <li>
+                            <a class="tab" @click="setTab()">
+                                {{ block.value.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {%for block in parcours_list %}
+                <hr>
+                <div>
+                    {%for step in block.value.steps %}
+                        <p>{{ step.date }}</p>
+                        <p>{{ step.richtext|richtext }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function setTab() {
+            console.log('ça marche');
+        }
+    </script>
 {% endblock %}

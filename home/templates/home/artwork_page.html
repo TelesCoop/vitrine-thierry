@@ -5,9 +5,11 @@
 {% block content %}
     <div class="container">
         <div class="section">
-            <a href="/galleries/">Retour</a>
+            <a href="/galeries/">Retour</a>
             <h1 class="title is-2 has-text-centered"> {{ artwork.name }} </h1>
-
+            <figure class="image">
+                <img src='{{ artwork.image.file.url }}' alt="Oeuvre image">
+            </figure>
             <div class="section">
                 {% include "components/free_body.html" with body=artwork.body %}
             </div>
