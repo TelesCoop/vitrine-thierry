@@ -11,7 +11,7 @@
         <div>
             <div class="tabs">
                 <ul>
-                    {%for block in parcours_list %}
+                    {%for block in page.parcours_block_data %}
                         <li id="{{block.value.title}}_tab" class="tab">
                             <a Onclick="setCurrentBlockTitle('{{block.value.title}}')">
                                 {{ block.value.title }}
@@ -20,7 +20,7 @@
                     {% endfor %}
                 </ul>
             </div>
-            {%for block in parcours_list %}
+            {%for block in page.parcours_block_data %}
                 <div id="{{block.value.title}}" class="my-2" style="display: none;">
                     {%for step in block.value.steps %}
                         <div class="is-flex">

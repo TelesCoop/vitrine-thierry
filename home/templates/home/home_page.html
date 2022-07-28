@@ -4,9 +4,14 @@
 
 {% block content %}
     <div class="container">
-        <div class="section has-text-centered">
-            <h1 class="title is-2">{{ page.title|richtext }}</h1>
-            <p>{{ page.body|richtext }}</p>
+        <div class="section">
+            <h1 class="title is-2 has-text-centered">{{ page.artist_name|richtext }}</h1>
+            <div class="is-flex is-align-items-center">
+                <figure class="image is-4by2">
+                    <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image">
+                </figure>
+                <p>{{ page.artist_body|richtext }}</p>
+            </div>
         </div>
     </div>
 

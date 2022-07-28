@@ -112,12 +112,6 @@ class PresentationPage(RoutablePageMixin, BannerPage):
         related_name="+",
     )
 
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
-        image = PresentationPage.objects.all().get().image
-        context["image_presentation"] = image.file.url if image else ""
-        return context
-
     content_panels = Page.content_panels + [
         FieldPanel("body"),
         FieldPanel("image"),
@@ -191,9 +185,6 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["parcours_list"] = (
-            WorkExperiencePage.objects.all().get().parcours_block_data
-        )
         context["first_parcours_list_title"] = (
             WorkExperiencePage.objects.all().get().parcours_block_data[0].value["title"]
         )
