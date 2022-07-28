@@ -6,9 +6,9 @@
     <div class="container">
         <div class="section">
             <h1 class="title is-2 has-text-centered">{{ page.artist_name|richtext }}</h1>
-            <div class="is-flex is-align-items-center">
-                <figure class="image is-4by2">
-                    <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image">
+            <div class="is-flex is-align-items-center is-justify-content-space-evenly">
+                <figure class="image" style="max-height: 500px;">
+                    <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image" style="max-height: 500px; height: 100%; object-fit: cover;">
                 </figure>
                 <p>{{ page.artist_body|richtext }}</p>
             </div>
