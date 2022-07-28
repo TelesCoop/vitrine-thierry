@@ -9,6 +9,7 @@ from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.admin.edit_handlers import (
     FieldPanel,
+    MultiFieldPanel,
     StreamFieldPanel,
     TabbedInterface,
     ObjectList,
@@ -52,15 +53,36 @@ class HomePage(BannerPage):
     # HomePage can be created only on the root
     parent_page_types = ["wagtailcore.Page"]
 
-    body = RichTextField(
+    artist_name = models.CharField(
+        verbose_name="Nom",
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    artist_body = RichTextField(
         null=True,
         blank=True,
         features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
-        verbose_name="Contenu de la page d'accueil",
+        verbose_name="Description",
+    )
+    artist_image = models.ForeignKey(
+        "wagtailimages.Image",
+        verbose_name="Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel("body", classname="full"),
+        MultiFieldPanel(
+            [
+                FieldPanel("artist_name"),
+                FieldPanel("artist_body"),
+                FieldPanel("artist_image"),
+            ],
+            heading="Artiste",
+        ),
     ]
 
     # Admin tabs list (Remove promotion and settings tabs)
