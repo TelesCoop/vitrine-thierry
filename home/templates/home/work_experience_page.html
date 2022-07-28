@@ -5,14 +5,15 @@
 
     <div class="container my-4">
         <h1 class="title is-2 has-text-centered">{{ page.title|richtext }}</h1>
-        <p>{{ page.body|richtext }}</p>
-        <hr>
+        <div class="my-4">
+            {{ page.body|richtext }}
+        </div>
         <div>
             <div class="tabs">
                 <ul>
                     {%for block in parcours_list %}
-                        <li>
-                            <a class="tab" @click="setTab()">
+                        <li id="{{block.value.title}}_tab" class="tab">
+                            <a Onclick="setCurrentBlockTitle('{{block.value.title}}')">
                                 {{ block.value.title }}
                             </a>
                         </li>
@@ -20,11 +21,12 @@
                 </ul>
             </div>
             {%for block in parcours_list %}
-                <hr>
-                <div>
+                <div id="{{block.value.title}}" class="my-2" style="display: none;">
                     {%for step in block.value.steps %}
-                        <p>{{ step.date }}</p>
-                        <p>{{ step.richtext|richtext }}</p>
+                        <div class="is-flex">
+                            <p class="has-text-primary has-text-weight-bold mr-2">{{ step.date }}</p>
+                            <p>{{ step.richtext|richtext }}</p>
+                        </div>
                     {% endfor %}
                 </div>
             {% endfor %}
@@ -35,8 +37,18 @@
 
 {% block extra_js %}
     <script>
-        function setTab() {
-            console.log('ça marche');
+        const FIRST_PARCOURS_LIST_TITLE = "{{first_parcours_list_title}}";
+        var currentBlockTitle = FIRST_PARCOURS_LIST_TITLE;
+        document.getElementById(currentBlockTitle).style.display = "block";
+        document.getElementById(currentBlockTitle + '_tab').className += " is-active";
+        function setCurrentBlockTitle(blockTitle) {
+            var current = document.getElementsByClassName("is-active");
+            current[0].className = current[0].className.replace(" is-active", "");
+            document.getElementById(currentBlockTitle).style.display = "none";
+            currentBlockTitle = blockTitle;
+            document.getElementById(currentBlockTitle + '_tab').className += " is-active";
+            document.getElementById(currentBlockTitle).style.display = "block";
         }
+
     </script>
 {% endblock %}

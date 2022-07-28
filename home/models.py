@@ -172,6 +172,9 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
         context["parcours_list"] = (
             WorkExperiencePage.objects.all().get().parcours_block_data
         )
+        context["first_parcours_list_title"] = (
+            WorkExperiencePage.objects.all().get().parcours_block_data[0].value["title"]
+        )
         return context
 
     content_panels = Page.content_panels + [
