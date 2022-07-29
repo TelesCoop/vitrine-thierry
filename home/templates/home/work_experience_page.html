@@ -12,6 +12,7 @@
             <div class="tabs">
                 <ul>
                     {%for block in page.parcours_block_data %}
+                    {% comment %} TODO : changer la couleur du 'is-active' {% endcomment %}
                         <li id="{{block.value.title}}_tab" class="tab">
                             <a Onclick="setCurrentBlockTitle('{{block.value.title}}')">
                                 {{ block.value.title }}
@@ -21,14 +22,14 @@
                 </ul>
             </div>
             {%for block in page.parcours_block_data %}
-                <div id="{{block.value.title}}" class="my-2" style="display: none;">
+                <table id="{{block.value.title}}" class="my-2" style="display: none;">
                     {%for step in block.value.steps %}
-                        <div class="is-flex">
-                            <p class="has-text-primary has-text-weight-bold mr-2">{{ step.date }}</p>
-                            <p>{{ step.richtext|richtext }}</p>
-                        </div>
+                        <tr>
+                            <td class="has-text-primary has-text-weight-bold p-2">{{ step.date }}</td>
+                            <td class="p-2">{{ step.richtext|richtext }}</td>
+                        </tr>
                     {% endfor %}
-                </div>
+                </table>
             {% endfor %}
         </div>
     </div>
@@ -51,4 +52,14 @@
         }
 
     </script>
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .is-active a {
+            border-bottom-color: #7290ab!important;
+            color: #7290ab!important;
+            font-weight: bold;
+        }
+    </style>
 {% endblock %}

@@ -13,15 +13,18 @@ from wagtail.admin.edit_handlers import (
     StreamFieldPanel,
     TabbedInterface,
     ObjectList,
+    InlinePanel,
 )
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
+from modelcluster.fields import ParentalKey
 from model_utils.models import TimeStampedModel
 
 
@@ -58,6 +61,7 @@ class HomePage(BannerPage):
         max_length=100,
         null=True,
         blank=True,
+        help_text="Si ce champs est vide alors cette partie ne s'affichera pas dans l'Accueil",
     )
     artist_body = RichTextField(
         null=True,
@@ -74,6 +78,22 @@ class HomePage(BannerPage):
         related_name="+",
     )
 
+    artworks_highlight_title = models.CharField(
+        verbose_name="Titre",
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text="Si ce champs est vide alors cette partie ne s'affichera pas dans l'Accueil",
+    )
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["artworks"] = Artwork.objects.all().filter(
+            artworks_highlight__isnull=False
+        )
+        context["artworks_page"] = ArtworksPage.objects.get()
+        return context
+
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
@@ -82,6 +102,16 @@ class HomePage(BannerPage):
                 FieldPanel("artist_image"),
             ],
             heading="Artiste",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("artworks_highlight_title"),
+                InlinePanel(
+                    "artworks_highlight",
+                    label="Oeuvres affichées",
+                ),
+            ],
+            heading="Oeuvres à la une",
         ),
     ]
 
@@ -341,6 +371,25 @@ class Artwork(index.Indexed, TimeStampedModel, FreeBodyField):
         verbose_name_plural = "Oeuvres"
         verbose_name = "Oeuvre"
         ordering = ["-created"]
+
+
+class HomePageArtworks(models.Model):
+    page = ParentalKey(
+        HomePage, on_delete=models.CASCADE, related_name="artworks_highlight"
+    )
+    artwork = models.ForeignKey(
+        Artwork,
+        on_delete=models.CASCADE,
+        verbose_name="Oeuvre",
+        related_name="artworks_highlight",
+    )
+
+    panels = [
+        SnippetChooserPanel("artwork"),
+    ]
+
+    class Meta:
+        unique_together = ("page", "artwork")
 
 
 @register_setting
