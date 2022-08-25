@@ -118,6 +118,13 @@ class HomePage(BannerPage):
     # Admin tabs list (Remove promotion and settings tabs)
     edit_handler = TabbedInterface([ObjectList(content_panels, heading="Content")])
 
+    @route("contact/", name="contact")
+    def contact(self, request):
+        context = self.get_json_list_tags()
+        return self.render(
+            request, template="home/contact.html", context_overrides=context
+        )
+
     class Meta:
         verbose_name = "Page d'Accueil"
 
@@ -390,6 +397,28 @@ class HomePageArtworks(models.Model):
 
     class Meta:
         unique_together = ("page", "artwork")
+
+
+@register_snippet
+class FriendlySite(models.Model):
+    name = models.CharField(verbose_name="Nom", max_length=100)
+    link = models.CharField(verbose_name="Lien", max_length=255)
+    display = models.BooleanField(default=True, verbose_name="Afficher")
+
+    class Meta:
+        verbose_name_plural = "Sites amis"
+        verbose_name = "Site ami"
+
+
+@register_snippet
+class ReferenceSite(models.Model):
+    name = models.CharField(verbose_name="Nom", max_length=100)
+    link = models.CharField(verbose_name="Lien", max_length=255)
+    display = models.BooleanField(default=True, verbose_name="Afficher")
+
+    class Meta:
+        verbose_name_plural = "Sites références"
+        verbose_name = "Site référence"
 
 
 @register_setting

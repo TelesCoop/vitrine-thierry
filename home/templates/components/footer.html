@@ -1,35 +1,57 @@
 {% load static %}
 
 <footer class="footer has-background-primary p-5 mt-6">
-    <div class="has-text-centered is-flex-wrap-wrap is-justify-content-space-evenly" style="display: flex;">
-        <a
-            class="has-text-light"
-            href="/"
-        >
-            Acceuil
-        </a>
-        <a
-            class="has-text-light"
-            href="/contact/"
-        >
-            Contact
-        </a>
-        <a
-            class="has-text-light"
-            href="https://www.facebook.com/thierry.baudry.547"
-            target="_blank"
-        >
-            Facebook
-        </a>
-        <a
-            class="has-text-light"
-            href="https://www.lamaisondesartistes.fr/site/les-webinars/"
-            target="_blank"
-        >
-            La maison des artistes
-        </a>
-        <span class="has-text-light">
-            Email: thierry.baudry.glass@wanadoo.fr
-        </span>
+    <div class="is-flex-wrap-wrap is-justify-content-space-evenly has-text-light" style="display: flex;">
+        <div>
+            <p class="has-text-weight-semibold">Contactez-moi</p>
+            <a
+                class="has-text-light is-underlined"
+                href="https://www.facebook.com/thierry.baudry.547"
+                target="_blank"
+            >
+                {% include "components/icon.html" with name='facebook-circle-fill' height="20" width="20" %}
+                thierry.baudry.547
+            </a>
+            <p>
+                {% include "components/icon.html" with name='mail-line' height="20" width="20" %}
+                thierry.baudry.glass@wanadoo.fr
+            </p>
+        </div>
+
+       {# TODO if no friendly_sites #}
+        <div>
+            <p class="has-text-weight-semibold">Sites références</p>
+            {% for friendly_site in friendly_sites %}
+                {% comment %} <a
+                    class="has-text-light is-underlined"
+                    href="https://www.lamaisondesartistes.fr/site/les-webinars/"
+                    target="_blank"
+                >
+                    La maison des artistes
+                </a> {% endcomment %}
+                <a
+                    class="has-text-light is-underlined"
+                    href="{{friendly_site.link}}"
+                    target="_blank"
+                >
+                    {{friendly_site.name}}
+                </a>
+            {% endfor %}
+        </div>
+
+        <div>
+            <p class="has-text-weight-semibold">Sites amis</p>
+            {% for reference_site in reference_sites %}
+                <a
+                    class="has-text-light is-underlined"
+                    href="{{reference_site.link}}"
+                    target="_blank"
+                >
+                    {{reference_site.name}}
+                </a>
+            {% endfor %}
+        </div>
+
+
     </div>
 </footer>

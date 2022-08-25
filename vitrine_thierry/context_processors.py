@@ -4,6 +4,7 @@ import datetime
 
 LAST_UPDATE: Dict[str, Union[None, datetime.datetime]] = {
     "standard_pages": None,
+    "footer_data": None,
 }
 
 
@@ -49,7 +50,31 @@ def load_standard_pages():
     return dict(standard_pages)
 
 
+def load_footer_data():
+    # This cannot be done in the main body of the page, because models
+    # are not yet loaded when this page is imported in the settings.
+    from home.models import FriendlySite, ReferenceSite
+
+    footer_data = defaultdict()
+
+    # Add presentation page
+    friendly_sites = FriendlySite.objects.filter(display=True)
+    footer_data["friendly_sites"] = friendly_sites
+
+    # Add Work Experience page
+    reference_sites = ReferenceSite.objects.filter(display=True)
+    footer_data["reference_sites"] = reference_sites
+
+    return dict(footer_data)
+
+
 def standard_pages(_):
     if not is_recent("standard_pages"):
         update_last_change("standard_pages")
     return load_standard_pages()
+
+
+def footer_data(_):
+    if not is_recent("footer_data"):
+        update_last_change("footer_data")
+    return load_footer_data()
