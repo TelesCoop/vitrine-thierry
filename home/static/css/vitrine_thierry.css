@@ -19,6 +19,10 @@ body {
     justify-items: center;
 }
 
+.rich-text li {
+    margin-left: 2rem !important;
+}
+
 @media (max-width: 1215px) {
     .narrow-container {
         max-width: 960px !important;

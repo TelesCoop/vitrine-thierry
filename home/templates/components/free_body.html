@@ -16,7 +16,7 @@
             {% image block.value original as image %}
             <img src="{{ image.url }}" alt="" loading="lazy">
         {% elif block.block_type == 'richtext' %}
-            <section>
+            <section class="rich-text">
                 {% include_block block.value %}
             </section>
         {% endif %}

@@ -5,8 +5,8 @@
 
     <div class="container narrow-container my-4">
         <section class="section">
-            <h1 class="title is-2 has-text-centered">{{ page.title|richtext }}</h1>
-            <div class="my-4">
+            <h1 class="title is-2 has-text-centered">{{ page.title }}</h1>
+            <div class="my-4 rich-text">
                 {{ page.body|richtext }}
             </div>
             <div>
@@ -27,7 +27,7 @@
                         {%for step in block.value.steps %}
                             <tr>
                                 <td class="has-text-primary has-text-weight-bold p-2">{{ step.date }}</td>
-                                <td class="p-2">{{ step.richtext|richtext }}</td>
+                                <td class="p-2 rich-text">{{ step.richtext|richtext }}</td>
                             </tr>
                         {% endfor %}
                     </table>

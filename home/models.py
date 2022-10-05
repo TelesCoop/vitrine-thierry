@@ -74,7 +74,6 @@ class HomePage(BannerPage):
     artist_body = RichTextField(
         null=True,
         blank=True,
-        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Description",
     )
     artist_image = models.ForeignKey(
@@ -145,7 +144,6 @@ class PresentationPage(RoutablePageMixin, BannerPage):
     body = RichTextField(
         null=True,
         blank=True,
-        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Contenu de la page de présentation",
     )
     image = models.ForeignKey(
@@ -181,7 +179,6 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
     body = RichTextField(
         null=True,
         blank=True,
-        features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
         verbose_name="Introduction de la page parcours",
     )
 
@@ -263,7 +260,6 @@ class FreeBodyField(models.Model):
                 "richtext",
                 blocks.RichTextBlock(
                     label="Paragraphe",
-                    features=SIMPLE_RICH_TEXT_FIELD_FEATURE,
                 ),
             ),
             ("image", ImageChooserBlock(label="Image")),
