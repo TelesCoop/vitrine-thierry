@@ -1,11 +1,11 @@
 {% load static %}
 {% load wagtailsettings_tags %}
 
-<nav class="navbar has-background-primary is-flex-direction-column mb-6" role="navigation" aria-label="main navigation">
+<nav class="navbar has-background-primary is-flex-direction-column" role="navigation" aria-label="main navigation">
     {%if banner_url%}
     <div class"navbar-item">
         <figure class="image" style="height: 270px;">
-            <img src='{{ banner_url }}' alt="Banière image" style="height: 100%; object-fit: cover;">
+            <img src='{{ banner_url }}' alt="Banière image" style="height: 100%; object-fit: cover;" loading="lazy">
         </figure>
     </div>
     {%endif%}
@@ -13,23 +13,25 @@
         <a class="navbar-item has-text-primary-light px-5" href="/">
             ACCUEIL
         </a>
-        <a class="navbar-item has-text-primary-light px-5" href="{{ presentation_page.url }}">
-            PRESENTATION
-        </a>
-        <a class="navbar-item has-text-primary-light px-5" href="{{ work_experience_page.url }}">
-            PARCOURS
-        </a>
-        <a class="navbar-item has-text-primary-light px-5" href="{{ artworks_page.url }}">
-            GALERIES
-        </a>
-        <a class="navbar-item has-text-primary-light px-5" href="{{ articles_page.url }}">
-            ARTICLES
-        </a>
+        {% if presentation_page %}
+            <a class="navbar-item has-text-primary-light px-5" href="{{ presentation_page.url }}">
+                PRESENTATION
+            </a>
+        {% endif %}
+        {% if work_experience_page %}
+            <a class="navbar-item has-text-primary-light px-5" href="{{ work_experience_page.url }}">
+                PARCOURS
+            </a>
+        {% endif %}
+        {% if artworks_page %}
+            <a class="navbar-item has-text-primary-light px-5" href="{{ artworks_page.url }}">
+                GALERIES
+            </a>
+        {% endif %}
+        {% if articles_page %}
+            <a class="navbar-item has-text-primary-light px-5" href="{{ articles_page.url }}">
+                ARTICLES
+            </a>
+        {% endif %}
     </div>
 </nav>
-
-<style>
-    .navbar-item:hover {
-        background: #4c6780 !important;
-    }
-</style>

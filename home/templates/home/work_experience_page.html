@@ -3,35 +3,37 @@
 
 {% block content %}
 
-    <div class="container my-4">
-        <h1 class="title is-2 has-text-centered">{{ page.title|richtext }}</h1>
-        <div class="my-4">
-            {{ page.body|richtext }}
-        </div>
-        <div>
-            <div class="tabs">
-                <ul>
-                    {%for block in page.parcours_block_data %}
-                    {% comment %} TODO : changer la couleur du 'is-active' {% endcomment %}
-                        <li id="{{block.value.title}}_tab" class="tab">
-                            <a Onclick="setCurrentBlockTitle('{{block.value.title}}')">
-                                {{ block.value.title }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
+    <div class="container narrow-container my-4">
+        <section class="section">
+            <h1 class="title is-2 has-text-centered">{{ page.title|richtext }}</h1>
+            <div class="my-4">
+                {{ page.body|richtext }}
             </div>
-            {%for block in page.parcours_block_data %}
-                <table id="{{block.value.title}}" class="my-2" style="display: none;">
-                    {%for step in block.value.steps %}
-                        <tr>
-                            <td class="has-text-primary has-text-weight-bold p-2">{{ step.date }}</td>
-                            <td class="p-2">{{ step.richtext|richtext }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endfor %}
-        </div>
+            <div>
+                <div class="tabs">
+                    <ul>
+                        {%for block in page.parcours_block_data %}
+                        {% comment %} TODO : changer la couleur du 'is-active' {% endcomment %}
+                            <li id="{{block.value.title}}_tab" class="tab">
+                                <a Onclick="setCurrentBlockTitle('{{block.value.title}}')">
+                                    {{ block.value.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {%for block in page.parcours_block_data %}
+                    <table id="{{block.value.title}}" class="my-2" style="display: none;">
+                        {%for step in block.value.steps %}
+                            <tr>
+                                <td class="has-text-primary has-text-weight-bold p-2">{{ step.date }}</td>
+                                <td class="p-2">{{ step.richtext|richtext }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 
 {% endblock %}

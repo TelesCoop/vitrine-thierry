@@ -2,6 +2,8 @@ from collections import defaultdict
 from typing import Dict, Union
 import datetime
 
+from home.models import ArticlesPage
+
 LAST_UPDATE: Dict[str, Union[None, datetime.datetime]] = {
     "standard_pages": None,
     "footer_data": None,
@@ -46,6 +48,10 @@ def load_standard_pages():
     # Add artworks page
     artworks_page = ArtworksPage.objects.filter().first()
     standard_pages["artworks_page"] = artworks_page
+
+    # Add articles page
+    articles_page = ArticlesPage.objects.filter().first()
+    standard_pages["articles_page"] = articles_page
 
     return dict(standard_pages)
 

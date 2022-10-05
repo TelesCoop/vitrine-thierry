@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags artwork_tags wagtailroutablepage_tags %}
+{% load wagtailcore_tags wagtailimages_tags wagtailroutablepage_tags %}
 
 {% block content %}
     <div class="container">
@@ -9,11 +9,8 @@
                 <div class="container">
                     <p class="is-size-6 pb-6">Cliquez sur un élément pour filtrer les oeuvres</p>
                     <div id="buttonGallery">
-                        <button class="is-outlined button is-rounded is-primary is-active mx-3" onclick="filterArtworks('all')">
-                            Tout
-                        </button>
                         {%for gallery in galleries%}
-                            <button class="button is-rounded is-{{gallery.color}} has-text-primary mx-3 my-1" onclick="filterArtworks('{{gallery.name}}')">
+                            <button id="gallery-{{gallery.name}}" class="button is-rounded is-{{gallery.color}} mx-3 my-1 is-light has-text-primary-dark" onclick="toggleGallery('{{gallery.name}}')">
                                 {{gallery.name}}
                             </button>
                         {% endfor %}
@@ -25,31 +22,7 @@
                 <h2 class="title is-3 has-text-centered has-text-weight-semibold has-text-primary-dark">Les Oeuvres</h2>
                 <div class="columns is-6 is-multiline">
                     {%for artwork in artworks%}
-                        <a class="artwork-filtered {%for gallery in artwork.galleries.all%} {{gallery.name}} {% endfor %}" href="{% routablepageurl page "artwork" artwork.slug %}">
-                            <div class="card has-background-white-ter" style="height: 100%">
-                                <div class="card-image">
-                                    {% image artwork.image min-400x300 as artwork_image %}
-                                    {% comment %} Todo : find the right settings for the width and height of the image {% endcomment %}
-                                    <figure class="image" style="height: 200px;">
-                                            <img src='{{ artwork_image.url }}' alt="Oeuvre image" style="height: 100%; object-fit: cover;">
-                                    </figure>
-                                </div>
-                                {% comment %} TODO : make is-flex working {% endcomment %}
-                                <div class="card-content has-text-primary is-flex is-flex-direction-column is-justify-content-space-between" style="height: calc(100% - 200px); display: flex;">
-                                    <div>
-                                        <h3 class="title is-5 has-text-primary-dark has-text-weight-bold">{{artwork.name}}</h3>
-                                        <p class="is-size-6 artwork-description">{{artwork.short_description}}</p>
-                                    </div>
-                                    <div class="has-text-centered mt-3 is-flex-wrap-wrap" style="display: flex; gap: 0.5rem;">
-                                        {%for gallery in artwork.galleries.all%}
-                                        <p class="button is-rounded is-{{gallery.color}}">
-                                            {{gallery.name}}
-                                        </p>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                        {% include "components/card-artwork.html" with artworks_page=artworks_page artwork=artwork %}
                     {% endfor %}
                 </div>
             </div>
@@ -60,47 +33,32 @@
 
 {% block extra_js %}
     <script>
-        filterArtworks("all")
-        function filterArtworks(name) {
-            var x, i;
-            x = document.getElementsByClassName("artwork-filtered");
-            if (name == "all") name = "";
-            for (i = 0; i < x.length; i++) {
-                removeClassToUnselectedArtwork(x[i], " column is-one-third");
-                if (x[i].className.indexOf(name) > -1) addClassToSelectedArtwork(x[i], " column is-one-third");
+        const galleriesSelected = []
+
+        function toggleGallery(galleryName) {
+            addOrRemove(galleriesSelected, galleryName)
+            const galleryElement = document.getElementById("gallery-" + galleryName);
+            galleryElement.classList.toggle("is-light");
+            galleryElement.classList.toggle("has-text-primary-dark");
+            galleryElement.classList.toggle("has-text-white");
+            updateArtworks();
+        }
+
+        function updateArtworks() {
+            const artworks = document.getElementsByClassName("artwork-filtered");
+            for (const artwork of artworks) {
+                const isEnabled = (galleriesSelected.length === 0 || galleriesSelected.some(item => artwork.classList.contains(item)))
+                artwork.style.display = isEnabled ? "block" : "none";
             }
         }
 
-        function addClassToSelectedArtwork(element, name) {
-            var i, arr1, arr2;
-            arr1 = element.className.split(" ");
-            arr2 = name.split(" ");
-            for (i = 0; i < arr2.length; i++) {
-                if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+        function addOrRemove(array, value) {
+            var index = array.indexOf(value);
+            if (index === -1) {
+                array.push(value);
+            } else {
+                array.splice(index, 1);
             }
-        }
-
-        function removeClassToUnselectedArtwork(element, name) {
-            var i, arr1, arr2;
-            arr1 = element.className.split(" ");
-            arr2 = name.split(" ");
-            for (i = 0; i < arr2.length; i++) {
-                while (arr1.indexOf(arr2[i]) > -1) {
-                arr1.splice(arr1.indexOf(arr2[i]), 1);
-                }
-            }
-            element.className = arr1.join(" ");
-        }
-
-        // Add active class to the current button (highlight it)
-        var buttonContainer = document.getElementById("buttonGallery");
-        var buttons = buttonContainer.getElementsByClassName("button");
-        for (var i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener("click", function(){
-                var current = document.getElementsByClassName("is-active");
-                current[0].className = current[0].className.replace(" is-active", "");
-                this.className += " is-active";
-            });
         }
     </script>
 {% endblock %}

@@ -419,7 +419,6 @@ class ArticlesPage(RoutablePageMixin, BannerPage):
                 "article": article,
                 "home_page": HomePage.objects.get(),
                 "articles_page": ArticlesPage.objects.get(),
-                "other_news_list": article.objects.exclude(id=article.id)[:3],
             },
             template="home/article_page.html",
         )
@@ -505,8 +504,8 @@ class Article(index.Indexed, TimeStampedModel, FreeBodyField):
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name_plural = "Oeuvres"
-        verbose_name = "Oeuvre"
+        verbose_name_plural = "Articles"
+        verbose_name = "Article"
         ordering = ["-created"]
 
 

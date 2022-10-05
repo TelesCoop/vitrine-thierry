@@ -17,6 +17,10 @@
     width: var(--icon-size);
 }
 
+.card {
+    min-height: 200px;
+}
+
 .card .card-image img {
     object-fit: cover;
     width: 100%;
@@ -32,7 +36,12 @@
     max-height: 300px;
 }
 
-.horizontal-card .image {
+.vertical-card {
+    height: 100%;
+}
+
+.horizontal-card .image,
+.vertical-card .image {
     height: 100%;
 }
 

@@ -18,27 +18,22 @@
             </p>
         </div>
 
-       {# TODO if no friendly_sites #}
-        <div>
-            <p class="has-text-weight-semibold">Sites références</p>
-            {% for friendly_site in friendly_sites %}
-                {% comment %} <a
-                    class="has-text-light is-underlined"
-                    href="https://www.lamaisondesartistes.fr/site/les-webinars/"
-                    target="_blank"
-                >
-                    La maison des artistes
-                </a> {% endcomment %}
-                <a
-                    class="has-text-light is-underlined"
-                    href="{{friendly_site.link}}"
-                    target="_blank"
-                >
-                    {{friendly_site.name}}
-                </a>
-            {% endfor %}
-        </div>
+        {% if friendly_sites|length > 0 %}
+            <div>
+                <p class="has-text-weight-semibold">Sites références</p>
+                {% for friendly_site in friendly_sites %}
+                    <a
+                        class="has-text-light is-underlined"
+                        href="{{friendly_site.link}}"
+                        target="_blank"
+                    >
+                        {{friendly_site.name}}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
 
+        {% if reference_sites|length > 0 %}
         <div>
             <p class="has-text-weight-semibold">Sites amis</p>
             {% for reference_site in reference_sites %}
@@ -51,6 +46,7 @@
                 </a>
             {% endfor %}
         </div>
+        {% endif %}
 
 
     </div>

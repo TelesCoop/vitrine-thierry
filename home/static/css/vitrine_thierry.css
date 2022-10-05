@@ -1,7 +1,19 @@
 @import "card.css";
 
 body {
-    color: #231f20;
-    font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
     line-height: 1.25;
+}
+
+.narrow-container {
+    max-width: 1050px !important;
+}
+
+@media (max-width: 1215px) {
+    .narrow-container {
+        max-width: 960px !important;
+    }
+}
+
+.navbar-item:hover {
+    background: #4c6780 !important;
 }
