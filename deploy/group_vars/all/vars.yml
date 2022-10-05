@@ -1,0 +1,15 @@
+---
+
+organization_slug: telescoop
+project_slug: thierry-baudry
+main_user: thierry-baudry
+main_user_uid: 1070  # must be unique for each project on the server
+public_hostnames:
+  - thierry-baudry.tlscp.fr
+django_project_name: thierry-baudry
+backend_repo: https://gitlab.com/telescoop-public/vitrine-thierry.git
+backend_application_port: 8135  # must be unique for each project on the server
+backend_static_path: /{{ organization_slug }}/{{ project_slug}}/backend_static
+backend_media_path: /{{ organization_slug }}/{{ project_slug}}/backend/media
+identity_file_path: /home/{{ main_user }}/.ssh/id_ed25519
+var_log_path: /var/log/{{ organization_slug }}/{{ project_slug }}
