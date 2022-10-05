@@ -7,7 +7,7 @@
         {%if page.artist_name%}
         <div class="section">
             <h1 class="title is-2 has-text-centered">{{ page.artist_name|richtext }}</h1>
-            <div class="is-flex is-align-items-center is-justify-content-space-evenly">
+            <div class="is-flex is-align-items-center is-justify-content-space-evenly mt-6">
                 <figure class="image" style="max-height: 500px;">
                     <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image" style="max-height: 500px; height: 100%; object-fit: cover;">
                 </figure>
@@ -19,31 +19,7 @@
         <div class="section">
             <h2 class="title is-3 has-text-centered">{{ page.artworks_highlight_title|richtext }}</h2>
             {%for artwork in artworks%}
-            <a class="{%for gallery in artwork.galleries.all%} {{gallery.name}} {% endfor %}" href="{% artwork_page_url artworks_page artwork %}">
-                <div class="card has-background-white-ter" style="height: 100%">
-                    <div class="card-image">
-                        {% image artwork.image min-400x300 as artwork_image %}
-                        {% comment %} Todo : find the right settings for the width and height of the image {% endcomment %}
-                        <figure class="image" style="height: 200px;">
-                                <img src='{{ artwork_image.url }}' alt="Oeuvre image" style="height: 100%; object-fit: cover;">
-                        </figure>
-                    </div>
-                    {% comment %} TODO : make is-flex working {% endcomment %}
-                    <div class="card-content has-text-primary is-flex is-flex-direction-column is-justify-content-space-between" style="height: calc(100% - 200px); display: flex;">
-                        <div>
-                            <h3 class="title is-5 has-text-primary-dark has-text-weight-bold">{{artwork.name}}</h3>
-                            <p class="is-size-6 artwork-description">{{artwork.short_description}}</p>
-                        </div>
-                        <div class="has-text-centered mt-3 is-flex-wrap-wrap" style="display: flex; gap: 0.5rem;">
-                            {%for gallery in artwork.galleries.all%}
-                            <p class="button is-rounded is-{{gallery.color}}">
-                                {{gallery.name}}
-                            </p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </a>
+                {% include "components/card.html" with artworks_page=artworks_page artwork=artwork horizontal=True %}
             {% endfor %}
         </div>
         {% endif %}

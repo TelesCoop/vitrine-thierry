@@ -10,14 +10,11 @@ from wagtail.core.fields import RichTextField, StreamField
 from wagtail.admin.edit_handlers import (
     FieldPanel,
     MultiFieldPanel,
-    StreamFieldPanel,
     TabbedInterface,
     ObjectList,
     InlinePanel,
 )
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
@@ -218,6 +215,7 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
         ],
         blank=True,
         verbose_name="Parcours",
+        use_json_field=True,
     )
 
     def get_context(self, request, *args, **kwargs):
@@ -229,7 +227,7 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
-        StreamFieldPanel("parcours_block_data"),
+        FieldPanel("parcours_block_data"),
     ]
 
     # Admin tabs list (Remove promotion and settings tabs)
@@ -263,10 +261,11 @@ class FreeBodyField(models.Model):
         blank=True,
         verbose_name="Contenu",
         help_text="Corps de la page",
+        use_json_field=True,
     )
 
     panels = [
-        StreamFieldPanel("body", classname="full"),
+        FieldPanel("body", classname="full"),
     ]
 
     class Meta:
@@ -327,7 +326,7 @@ class Gallery(models.Model):
 
     panels = [
         FieldPanel("name"),
-        StreamFieldPanel("color", classname="full"),
+        FieldPanel("color", classname="full"),
     ]
 
     class Meta:
@@ -392,11 +391,123 @@ class HomePageArtworks(models.Model):
     )
 
     panels = [
-        SnippetChooserPanel("artwork"),
+        FieldPanel("artwork"),
     ]
 
     class Meta:
         unique_together = ("page", "artwork")
+
+
+class ArticlesPage(RoutablePageMixin, BannerPage):
+    parent_page_types = ["HomePage"]
+    subpage_types: List[str] = []
+    max_count_per_parent = 1
+
+    content_panels = Page.content_panels
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["articles"] = Article.objects.all()
+        return context
+
+    @route(r"^(.*)/$", name="article")
+    def access_artwork_page(self, request, article_slug):
+        article = Article.objects.get(slug=article_slug)
+        return self.render(
+            request,
+            context_overrides={
+                "article": article,
+                "home_page": HomePage.objects.get(),
+                "articles_page": ArticlesPage.objects.get(),
+                "other_news_list": article.objects.exclude(id=article.id)[:3],
+            },
+            template="home/article_page.html",
+        )
+
+    # Admin tabs list (Remove promotion and settings tabs)
+    edit_handler = TabbedInterface([ObjectList(content_panels, heading="Content")])
+
+    def save(self, *args, **kwargs):
+        self.slug = "articles"
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Page des articles"
+        verbose_name_plural = "Pages des articles"
+
+
+@register_snippet
+class ArticleType(models.Model):
+    name = models.CharField(
+        verbose_name="Nom",
+        max_length=100,
+        help_text="Exemple: Poème, Extrait de catalogue",
+    )
+
+    def __str__(self):
+        return self.name
+
+    panels = [
+        FieldPanel("name"),
+    ]
+
+    class Meta:
+        verbose_name = "Type d'article"
+
+
+@register_snippet
+class Article(index.Indexed, TimeStampedModel, FreeBodyField):
+    name = models.CharField(verbose_name="Nom de l'article", max_length=100)
+    slug = models.SlugField(
+        max_length=100,
+        verbose_name="Slug (URL de l'article)",
+        unique=True,
+        blank=True,
+        default="",
+    )
+    types = models.ManyToManyField(
+        ArticleType, blank=True, verbose_name="Types d'article", related_name="articles"
+    )
+    short_description = models.CharField(
+        verbose_name="Description courte", max_length=256
+    )
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        verbose_name="Image principale",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    pdf = models.ForeignKey(
+        "wagtaildocs.Document",
+        verbose_name="Document principal",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("short_description"),
+        FieldPanel("types", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("image"),
+        FieldPanel("pdf"),
+    ] + FreeBodyField.panels
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = "Oeuvres"
+        verbose_name = "Oeuvre"
+        ordering = ["-created"]
 
 
 @register_snippet
@@ -404,6 +515,9 @@ class FriendlySite(models.Model):
     name = models.CharField(verbose_name="Nom", max_length=100)
     link = models.CharField(verbose_name="Lien", max_length=255)
     display = models.BooleanField(default=True, verbose_name="Afficher")
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name_plural = "Sites amis"
@@ -415,6 +529,9 @@ class ReferenceSite(models.Model):
     name = models.CharField(verbose_name="Nom", max_length=100)
     link = models.CharField(verbose_name="Lien", max_length=255)
     display = models.BooleanField(default=True, verbose_name="Afficher")
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name_plural = "Sites références"
@@ -433,7 +550,7 @@ class BannerSetting(BaseSetting):
     )
 
     panels = [
-        ImageChooserPanel("navbar_banner"),
+        FieldPanel("navbar_banner"),
     ]
 
     class Meta:
