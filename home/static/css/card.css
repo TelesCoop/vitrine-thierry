@@ -1,6 +1,6 @@
 .card::before {
     bottom: 2rem;
-    color: var(--text-action-high-blue-france);
+    color: #7290AB;
     position: absolute;
     content: "";
     right: 2rem;
@@ -19,6 +19,11 @@
 
 .card {
     min-height: 200px;
+    background-color: hsl(0, 0%, 96%) !important;
+}
+
+.card:hover {
+    background-color: hsl(0, 0%, 94%) !important;
 }
 
 .card .card-image img {
@@ -34,6 +39,11 @@
 
 .horizontal-card .card-image {
     max-height: 300px;
+}
+
+.horizontal-card .card-image img {
+    border-bottom-left-radius: 0.25rem !important;
+    border-top-right-radius: 0rem !important;
 }
 
 .vertical-card {

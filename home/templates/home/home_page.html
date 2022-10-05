@@ -7,11 +7,13 @@
         {%if page.artist_name%}
         <div class="section">
             <h1 class="title is-2 has-text-centered">{{ page.artist_name|richtext }}</h1>
-            <div class="is-flex is-align-items-center is-justify-content-space-evenly mt-6">
+            <div class="mt-6 home__presentation">
+                <div>
+                    <p>{{ page.artist_body|richtext }}</p>
+                </div>
                 <figure class="image" style="max-height: 500px;">
-                    <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image" style="max-height: 500px; height: 100%; object-fit: cover;" loading="lazy">
+                    <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image" style="max-height: 500px; height: 100%; object-fit: cover; border-radius: 2%;" loading="lazy">
                 </figure>
-                <p>{{ page.artist_body|richtext }}</p>
             </div>
         </div>
         {% endif %}

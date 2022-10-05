@@ -1,7 +1,7 @@
 {% load wagtailcore_tags wagtailroutablepage_tags wagtailimages_tags %}
 
 <a href="{% routablepageurl articles_page "article" article.slug %}">
-  <div class="card has-background-white-ter {% if horizontal %} horizontal-card {% else %} vertical-card {% endif %}">
+  <div class="card {% if horizontal %} horizontal-card {% else %} vertical-card {% endif %}">
     {% if article.image %}
       <div class="card-image">
           {% image article.image min-400x300 as article_image %}

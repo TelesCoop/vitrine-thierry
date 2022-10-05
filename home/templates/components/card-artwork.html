@@ -3,7 +3,7 @@
 <a
 class="artwork-filtered {%for gallery in artwork.galleries.all%} {{gallery.name}} {% endfor %} {% if not horizontal %} column is-one-third {% endif %}"
 href="{% routablepageurl artworks_page "artwork" artwork.slug %}">
-  <div class="card has-background-white-ter {% if horizontal %} horizontal-card {% else %} vertical-card {% endif %}">
+  <div class="card {% if horizontal %} horizontal-card {% else %} vertical-card {% endif %}">
       <div class="card-image">
           {% image artwork.image min-400x300 as artwork_image %}
           <figure class="image">

@@ -8,12 +8,19 @@ body {
     max-width: 1050px !important;
 }
 
+.navbar-item:hover {
+    background: #4c6780 !important;
+}
+
+.home__presentation {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-items: center;
+}
+
 @media (max-width: 1215px) {
     .narrow-container {
         max-width: 960px !important;
     }
-}
-
-.navbar-item:hover {
-    background: #4c6780 !important;
 }

@@ -10,27 +10,27 @@
     </div>
     {%endif%}
     <div class="navbar-start mx-auto">
-        <a class="navbar-item has-text-primary-light px-5" href="/">
-            ACCUEIL
+        <a class="navbar-item has-text-primary-light px-5 is-uppercase" href="/">
+            {{ home_page.nav_name }}
         </a>
         {% if presentation_page %}
-            <a class="navbar-item has-text-primary-light px-5" href="{{ presentation_page.url }}">
-                PRESENTATION
+            <a class="navbar-item has-text-primary-light px-5 is-uppercase" href="{{ presentation_page.url }}">
+                {{ presentation_page.nav_name }}
             </a>
         {% endif %}
         {% if work_experience_page %}
-            <a class="navbar-item has-text-primary-light px-5" href="{{ work_experience_page.url }}">
-                PARCOURS
+            <a class="navbar-item has-text-primary-light px-5 is-uppercase" href="{{ work_experience_page.url }}">
+                {{ work_experience_page.nav_name }}
             </a>
         {% endif %}
         {% if artworks_page %}
-            <a class="navbar-item has-text-primary-light px-5" href="{{ artworks_page.url }}">
-                GALERIES
+            <a class="navbar-item has-text-primary-light px-5 is-uppercase" href="{{ artworks_page.url }}">
+                {{ artworks_page.nav_name }}
             </a>
         {% endif %}
         {% if articles_page %}
-            <a class="navbar-item has-text-primary-light px-5" href="{{ articles_page.url }}">
-                ARTICLES
+            <a class="navbar-item has-text-primary-light px-5 is-uppercase" href="{{ articles_page.url }}">
+                {{ articles_page.nav_name }}
             </a>
         {% endif %}
     </div>

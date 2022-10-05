@@ -39,6 +39,17 @@ class Color(models.TextChoices):
 
 
 class BannerPage(Page):
+    nav_name = models.CharField(
+        verbose_name="Nom dans le menu",
+        max_length=36,
+        default="Accueil",
+        help_text="Ce nom d'affichera dans la barre de navigation",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("nav_name"),
+    ]
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         navbar_banner = BannerSetting.objects.all().first().navbar_banner
@@ -91,7 +102,7 @@ class HomePage(BannerPage):
         context["artworks_page"] = ArtworksPage.objects.get()
         return context
 
-    content_panels = Page.content_panels + [
+    content_panels = BannerPage.content_panels + [
         MultiFieldPanel(
             [
                 FieldPanel("artist_name"),
@@ -146,7 +157,7 @@ class PresentationPage(RoutablePageMixin, BannerPage):
         related_name="+",
     )
 
-    content_panels = Page.content_panels + [
+    content_panels = BannerPage.content_panels + [
         FieldPanel("body"),
         FieldPanel("image"),
     ]
@@ -225,7 +236,7 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
         )
         return context
 
-    content_panels = Page.content_panels + [
+    content_panels = BannerPage.content_panels + [
         FieldPanel("body"),
         FieldPanel("parcours_block_data"),
     ]
@@ -277,7 +288,7 @@ class ArtworksPage(RoutablePageMixin, BannerPage):
     subpage_types: List[str] = []
     max_count_per_parent = 1
 
-    content_panels = Page.content_panels
+    content_panels = BannerPage.content_panels
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -403,7 +414,7 @@ class ArticlesPage(RoutablePageMixin, BannerPage):
     subpage_types: List[str] = []
     max_count_per_parent = 1
 
-    content_panels = Page.content_panels
+    content_panels = BannerPage.content_panels
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
