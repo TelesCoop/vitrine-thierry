@@ -7,8 +7,8 @@ upstream app_servers_{{ project_slug }} {
 server {
 
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/geodev.tlscp.fr/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/geodev.tlscp.fr/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/thierry-baudry.tlscp.fr/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/thierry-baudry.tlscp.fr/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
@@ -26,11 +26,27 @@ server {
     }
 
     location /static  {
+        gzip on;
+        gzip_vary on;
+        gzip_proxied expired no-cache no-store private auth;
+        gzip_types image/svg+xml text/plain text/css text/xml application/javascript text/javascript application/x-javascript application/xml;
+        gzip_disable "MSIE [1-6]\.";
+        expires 30d;
+        add_header Vary Accept-Encoding;
+        access_log off;
         autoindex off;
         alias {{ backend_static_path }};
     }
 
     location /media  {
+        gzip on;
+        gzip_vary on;
+        gzip_proxied expired no-cache no-store private auth;
+        gzip_types image/svg+xml text/plain text/css text/xml application/javascript text/javascript application/x-javascript application/xml;
+        gzip_disable "MSIE [1-6]\.";
+        expires 30d;
+        add_header Vary Accept-Encoding;
+        access_log off;
         autoindex off;
         alias {{ backend_media_path }};
     }
@@ -50,12 +66,9 @@ server {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
-
-
     listen 80;
 
     server_name thierry-baudry.tlscp.fr;
     return 404; # managed by Certbot
-
 
 }
