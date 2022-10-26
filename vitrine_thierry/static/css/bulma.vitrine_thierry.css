@@ -124,6 +124,27 @@
 .has-text-gallery-red-dark {
   color: #861D31 !important; }
 
+.is-gallery-yellow {
+  --color: #CB8B33; }
+
+.is-gallery-purpule {
+  --color: #733063; }
+
+.is-gallery-orange {
+  --color: #A5582B; }
+
+.is-gallery-blue {
+  --color: #31458E; }
+
+.is-gallery-cyan {
+  --color: #598A89; }
+
+.is-gallery-green {
+  --color: #327B3F; }
+
+.is-gallery-red {
+  --color: #A4243B; }
+
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name {
@@ -7546,3 +7567,10 @@ body {
     flex-direction: row; }
     .mobile-gallery-filter div:not(:last-child) {
       margin-right: 0.5rem; } }
+
+.button:focus:not(:active) {
+  box-shadow: none !important; }
+
+.button.is-outlined:focus {
+  background-color: transparent !important;
+  color: var(--color) !important; }
