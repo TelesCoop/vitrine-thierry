@@ -4,7 +4,9 @@
 {% block content %}
     <div class="container narrow-container">
         <div class="section">
-            <a href="/galeries/">{% include "components/icon.html" with name="arrow-left" height="13" width="13" %} Liste des oeuvres</a>
+            <div class="mb-3">
+                <a href="/galeries/" class="has-text-primary-dark">{% include "components/icon.html" with name="arrow-left" height="18" width="18" style="margin-bottom: -3px;" %} Retour</a>
+            </div>
             <h1 class="title is-2"> {{ artwork.name }} </h1>
             <figure class="image">
                 <img src='{{ artwork.image.file.url }}' alt="Oeuvre image" loading="lazy">

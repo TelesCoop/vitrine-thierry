@@ -1,0 +1,25 @@
+@import "card"
+
+body
+  line-height: 1.25
+
+.narrow-container
+  max-width: 1050px !important
+
+.home__presentation
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+
+.navbar-item-active
+  border-bottom-color: white
+  border-bottom-style: solid
+
+.rich-text li
+  margin-left: 2rem !important
+
+@media (max-width: 1215px)
+  .narrow-container
+    max-width: 960px !important
+
+.parcours_block:nth-child(2n)
+  background-color: $primary-light
