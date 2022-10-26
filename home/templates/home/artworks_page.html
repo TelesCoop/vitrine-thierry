@@ -2,29 +2,23 @@
 {% load wagtailcore_tags wagtailimages_tags wagtailroutablepage_tags %}
 
 {% block content %}
-    <div class="container">
+    <div class="container narrow-container">
         <div class="section">
-            <div class="has-text-centered has-text-primary">
-                <h1 class="title is-2 has-text-primary-dark"> {{ page.title }} </h1>
-                <div class="container">
-                    <p class="is-size-6 pb-6">Cliquez sur un élément pour filtrer les oeuvres</p>
-                    <div id="buttonGallery">
-                        {%for gallery in galleries%}
-                            <button id="gallery-{{gallery.name}}" class="button is-rounded is-{{gallery.color}} mx-3 my-1 is-light has-text-primary-dark" onclick="toggleGallery('{{gallery.name}}')">
-                                {{gallery.name}}
-                            </button>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <hr class="is-hidden-mobile">
-            <div class="section">
-                <h2 class="title is-3 has-text-centered has-text-weight-semibold has-text-primary-dark">Les Oeuvres</h2>
-                <div class="columns is-6 is-multiline">
-                    {%for artwork in artworks%}
-                        {% include "components/card-artwork.html" with artworks_page=artworks_page artwork=artwork %}
+            <h1 class="title is-2 has-text-black-ter"> {{ page.title }} </h1>
+            <div class="pb-6">
+                <p class="title is-6">Filtrer par galerie</p>
+                <div id="buttonGallery">
+                    {%for gallery in galleries%}
+                        <button id="gallery-{{gallery.name}}" class="button is-rounded is-outlined is-{{gallery.color}} mx-1" onclick="toggleGallery('{{gallery.name}}')">
+                            {{gallery.name}}
+                        </button>
                     {% endfor %}
                 </div>
+            </div>
+            <div class="columns is-6 is-multiline">
+                {%for artwork in artworks %}
+                    {% include "components/card-artwork.html" with artworks_page=artworks_page artwork=artwork %}
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -38,9 +32,7 @@
         function toggleGallery(galleryName) {
             addOrRemove(galleriesSelected, galleryName)
             const galleryElement = document.getElementById("gallery-" + galleryName);
-            galleryElement.classList.toggle("is-light");
-            galleryElement.classList.toggle("has-text-primary-dark");
-            galleryElement.classList.toggle("has-text-white");
+            galleryElement.classList.toggle("is-outlined");
             updateArtworks();
         }
 
@@ -61,14 +53,4 @@
             }
         }
     </script>
-{% endblock %}
-
-{% block extra_css %}
-    <style>
-        hr {
-            background-color: rgb(13 26 38 / 71%);
-            margin: 2.5rem 20rem 0rem;
-            height: 1px;
-        }
-    </style>
 {% endblock %}

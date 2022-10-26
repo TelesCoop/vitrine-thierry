@@ -1,6 +1,6 @@
 .card::before {
     bottom: 2rem;
-    color: #7290AB;
+    color: hsl(0, 0%, 29%);
     position: absolute;
     content: "";
     right: 2rem;

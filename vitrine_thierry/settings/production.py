@@ -5,13 +5,11 @@ DEBUG = True
 SECRET_KEY = config.getstr("security.secret_key")  # noqa: F405
 ALLOWED_HOSTS = config.getlist("security.allowed_hosts")  # noqa: F405
 STATIC_ROOT = config.getstr("staticfiles.static_root")  # noqa: F405
-# TODO : add secure to http
 CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
 WAGTAIL_ENABLE_UPDATE_CHECK = False  # Disable update alerts
 
-# TODO : add secure to http
-WAGTAILADMIN_BASE_URL = "http://thierry-baudry.tlscp.fr"
+WAGTAILADMIN_BASE_URL = "https://thierry-baudry.tlscp.fr"
 
 ANYMAIL = {
     "MAILGUN_API_KEY": config.getstr("mail.api_key"),  # noqa: F405

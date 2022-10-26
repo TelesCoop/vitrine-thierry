@@ -3,65 +3,32 @@
 
 {% block content %}
 
-    <div class="container narrow-container my-4">
+    <div class="container narrow-container">
         <section class="section">
-            <h1 class="title is-2 has-text-centered">{{ page.title }}</h1>
+            <h1 class="title is-2">{{ page.title }}</h1>
             <div class="my-4 rich-text">
                 {{ page.body|richtext }}
             </div>
-            <div>
-                <div class="tabs">
-                    <ul>
-                        {%for block in page.parcours_block_data %}
-                        {% comment %} TODO : changer la couleur du 'is-active' {% endcomment %}
-                            <li id="{{block.value.title}}_tab" class="tab">
-                                <a Onclick="setCurrentBlockTitle('{{block.value.title}}')">
-                                    {{ block.value.title }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {%for block in page.parcours_block_data %}
-                    <table id="{{block.value.title}}" class="my-2" style="display: none;">
+            {%for block in page.parcours_block_data %}
+                <div class="mt-6">
+                    <h2 class="title is-4">{{ block.value.title }}</h2>
+                    <p> {{ block.value.intro }}</p>
+                    <table class="my-2 has-text-grey-dark">
                         {%for step in block.value.steps %}
                             <tr>
-                                <td class="has-text-primary has-text-weight-bold p-2">{{ step.date }}</td>
-                                <td class="p-2 rich-text">{{ step.richtext|richtext }}</td>
+                                {% if step.date %}
+                                    <td class="has-text-weight-bold pr-3 py-2">{{ step.date }}</td>
+                                {% endif %}
+                                <td class="py-2 rich-text">{{ step.richtext|richtext }}</td>
                             </tr>
                         {% endfor %}
                     </table>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </section>
     </div>
 
 {% endblock %}
 
-{% block extra_js %}
-    <script>
-        const FIRST_PARCOURS_LIST_TITLE = "{{first_parcours_list_title}}";
-        var currentBlockTitle = FIRST_PARCOURS_LIST_TITLE;
-        document.getElementById(currentBlockTitle).style.display = "block";
-        document.getElementById(currentBlockTitle + '_tab').className += " is-active";
-        function setCurrentBlockTitle(blockTitle) {
-            var current = document.getElementsByClassName("is-active");
-            current[0].className = current[0].className.replace(" is-active", "");
-            document.getElementById(currentBlockTitle).style.display = "none";
-            currentBlockTitle = blockTitle;
-            document.getElementById(currentBlockTitle + '_tab').className += " is-active";
-            document.getElementById(currentBlockTitle).style.display = "block";
-        }
-
-    </script>
-{% endblock %}
-
 {% block extra_css %}
-    <style>
-        .is-active a {
-            border-bottom-color: #7290ab!important;
-            color: #7290ab!important;
-            font-weight: bold;
-        }
-    </style>
 {% endblock %}

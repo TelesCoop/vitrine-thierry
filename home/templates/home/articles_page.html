@@ -2,18 +2,14 @@
 {% load wagtailcore_tags wagtailimages_tags wagtailroutablepage_tags %}
 
 {% block content %}
-    <div class="container">
+    <div class="container narrow-container">
         <div class="section">
-            <div class="has-text-centered has-text-primary">
-                <h1 class="title is-2 has-text-primary-dark"> {{ page.title }} </h1>
-            </div>
-            <div class="section">
-                {% for article in articles %}
-                    <div class="my-6">
-                        {% include "components/card-article.html" with articles_page=articles_page article=article horizontal=True %}
-                    </div>
-                {% endfor %}
-            </div>
+            <h1 class="title is-2 has-text-black-ter"> {{ page.title }} </h1>
+            {% for article in articles %}
+                <div class="my-6">
+                    {% include "components/card-article.html" with articles_page=articles_page article=article horizontal=True %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

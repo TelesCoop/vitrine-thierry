@@ -26,24 +26,20 @@ def load_standard_pages():
     """
     Returns context with standard pages such as
     {
-        "presentation_page": <PresentationPage>,
         "work_experience_page": <WorkExperiencePage>,
+        "artworks_page": <ArtworksPage>,
         ...
     }
     """
     # This cannot be done in the main body of the page, because models
     # are not yet loaded when this page is imported in the settings.
-    from home.models import ArtworksPage, PresentationPage, WorkExperiencePage
+    from home.models import ArtworksPage, WorkExperiencePage
 
     standard_pages = defaultdict()
 
     # Add home page
     home_page = HomePage.objects.filter().first()
     standard_pages["home_page"] = home_page
-
-    # Add presentation page
-    presentation_page = PresentationPage.objects.filter().first()
-    standard_pages["presentation_page"] = presentation_page
 
     # Add Work Experience page
     work_experience_page = WorkExperiencePage.objects.filter().first()
@@ -67,11 +63,9 @@ def load_footer_data():
 
     footer_data = defaultdict()
 
-    # Add presentation page
     friendly_sites = FriendlySite.objects.filter(display=True)
     footer_data["friendly_sites"] = friendly_sites
 
-    # Add Work Experience page
     reference_sites = ReferenceSite.objects.filter(display=True)
     footer_data["reference_sites"] = reference_sites
 

@@ -5,7 +5,7 @@
     <div class="container narrow-container">
         <div class="section">
             <a href="/galeries/">{% include "components/icon.html" with name="arrow-left" height="13" width="13" %} Liste des oeuvres</a>
-            <h1 class="title is-2 has-text-centered"> {{ artwork.name }} </h1>
+            <h1 class="title is-2"> {{ artwork.name }} </h1>
             <figure class="image">
                 <img src='{{ artwork.image.file.url }}' alt="Oeuvre image" loading="lazy">
             </figure>

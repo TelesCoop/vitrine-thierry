@@ -2,7 +2,6 @@
 $black: #0D1A26
 $blue: #7290AB
 $blue-bis: #E1EBF5
-$cyan: #40B2F2
 $grey: #98A3AC
 
 // derived colors
@@ -10,18 +9,17 @@ $grey: #98A3AC
 $primary: $blue
 //for the color in the background
 $light: $blue-bis
-$link: $cyan
-//for the contact page
-$info: $grey
 
 // custom colors
-$gallery-yellow: #726d09
-$gallery-purpule: #56177e
-$gallery-orange: #7c4a0c
-$gallery-blue: #0f216e
-$gallery-cyan: #195c61
-$gallery-green: #05700a
-$gallery-red: #680f0f
+
+$gallery-yellow: #CB8B33
+$gallery-purpule: #733063
+$gallery-orange: #A5582B
+$gallery-blue: #31458E
+$gallery-cyan: #598A89
+$gallery-green: #327B3F
+$gallery-red: #A4243B
+
 @import "node_modules/bulma/sass/utilities/functions"
 $gallery-yellow-invert: findColorInvert($gallery-yellow)
 $gallery-purpule-invert: findColorInvert($gallery-purpule)
@@ -30,12 +28,52 @@ $gallery-blue-invert: findColorInvert($gallery-blue)
 $gallery-cyan-invert: findColorInvert($gallery-cyan)
 $gallery-green-invert: findColorInvert($gallery-green)
 $gallery-red-invert: findColorInvert($gallery-red)
-$custom-colors: ("gallery-yellow": ($gallery-yellow, $gallery-yellow-invert), "gallery-purpule": ($gallery-purpule, $gallery-purpule-invert), "gallery-orange": ($gallery-orange, $gallery-orange-invert), "gallery-blue": ($gallery-blue, $gallery-blue-invert), "gallery-cyan": ($gallery-cyan, $gallery-cyan-invert), "gallery-green": ($gallery-green, $gallery-green-invert), "gallery-red": ($gallery-red, $gallery-red-invert))
+
+$gallery-yellow-light: #D6A35C
+$gallery-purpule-light: #903C7C
+$gallery-orange-light: #CD713C
+$gallery-blue-light: #3E58B6
+$gallery-cyan-light: #76A7A7
+$gallery-green-light: #419F52
+$gallery-red-light: #D33653
+
+$gallery-yellow-dark: #B47B2D
+$gallery-purpule-dark: #56254B
+$gallery-orange-dark: #824521
+$gallery-blue-dark: #24346A
+$gallery-cyan-dark: #487070
+$gallery-green-dark: #24562C
+$gallery-red-dark: #861D31
+
+$custom-colors: ("gallery-yellow": ($gallery-yellow, $gallery-yellow-invert, $gallery-yellow-light, $gallery-yellow-dark), "gallery-purpule": ($gallery-purpule, $gallery-purpule-invert, $gallery-purpule-light, $gallery-purpule-dark), "gallery-orange": ($gallery-orange, $gallery-orange-invert, $gallery-orange-light, $gallery-orange-dark), "gallery-blue": ($gallery-blue, $gallery-blue-invert, $gallery-blue-light, $gallery-blue-dark), "gallery-cyan": ($gallery-cyan, $gallery-cyan-invert, $gallery-cyan-light, $gallery-cyan-dark), "gallery-green": ($gallery-green, $gallery-green-invert, $gallery-green-light, $gallery-green-dark), "gallery-red": ($gallery-red, $gallery-red-invert, $gallery-red-light, $gallery-red-dark))
+
+@each $name, $pair in $custom-colors
+  @if length($pair) >= 4
+    $color-light: nth($pair, 3)
+    $color-dark: nth($pair, 4)
+    // Light
+    .has-border-#{$name}-light
+      border: 1px solid $color-light !important
+    .has-background-#{$name}-light
+      background-color: $color-light !important
+    .has-text-#{$name}-light
+      color: $color-light !important
+    // Dark
+    .has-border-#{$name}-dark
+      border: 1px solid $color-dark !important
+    .has-background-#{$name}-dark
+      background-color: $color-dark !important
+    .has-text-#{$name}-dark
+      color: $color-dark !important
+
 // Text colors
 $text: $black
 $title-color: $text
 $content-heading-color: $text
 $label-color: $text
+
+// card
+$card-shadow: none
 
 // Import only what you need from Bulma
 @import "node_modules/bulma/sass/utilities/_all"

@@ -10,10 +10,10 @@ href="{% routablepageurl artworks_page "artwork" artwork.slug %}">
             <img src='{{ artwork_image.url }}' alt="Oeuvre image" loading="lazy">
           </figure>
       </div>
-      <div class="card-content has-text-primary is-flex is-flex-direction-column is-justify-content-space-between">
+      <div class="card-content is-flex is-flex-direction-column is-justify-content-space-between">
           <div>
-              <h3 class="title is-5 has-text-primary-dark has-text-weight-bold">{{artwork.name}}</h3>
-              <p class="is-size-6 artwork-description mb-5">{{artwork.short_description}}</p>
+              <h3 class="title is-5 has-text-black-bis has-text-weight-bold">{{artwork.name}}</h3>
+              <p class="is-size-6 artwork-description has-text-grey-dark mb-5">{{artwork.short_description}}</p>
           </div>
           <div class="has-text-left mt-3 is-flex-wrap-wrap" style="gap: 0.5rem;">
               {%for gallery in artwork.galleries.all%}

@@ -1,53 +1,57 @@
 {% load static %}
 
-<footer class="footer has-background-primary p-5 mt-6">
-    <div class="is-flex-wrap-wrap is-justify-content-space-evenly has-text-light" style="display: flex;">
-        <div>
-            <p class="has-text-weight-semibold">Contactez-moi</p>
-            <a
-                class="has-text-light is-underlined"
-                href="https://www.facebook.com/thierry.baudry.547"
-                target="_blank"
-            >
-                {% include "components/icon.html" with name='facebook-circle-fill' height="20" width="20" %}
-                thierry.baudry.547
-            </a>
-            <p>
-                {% include "components/icon.html" with name='mail-line' height="20" width="20" %}
-                thierry.baudry.glass@wanadoo.fr
-            </p>
-        </div>
-
-        {% if friendly_sites|length > 0 %}
+<footer class="footer has-background-primary px-1 mt-6" style="padding-top: 2rem; padding-bottom: 2rem">
+    <div class="container narrow-container">
+        <div class="has-text-white-ter px-6" style="display: grid; grid-template-columns: repeat(3, 1fr);">
             <div>
-                <p class="has-text-weight-semibold">Sites références</p>
-                {% for friendly_site in friendly_sites %}
-                    <a
-                        class="has-text-light is-underlined"
-                        href="{{friendly_site.link}}"
-                        target="_blank"
-                    >
-                        {{friendly_site.name}}
-                    </a>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% if reference_sites|length > 0 %}
-        <div>
-            <p class="has-text-weight-semibold">Sites amis</p>
-            {% for reference_site in reference_sites %}
+                <p class="has-text-weight-semibold pb-2">Contactez-moi</p>
                 <a
-                    class="has-text-light is-underlined"
-                    href="{{reference_site.link}}"
+                    class="has-text-white-ter is-underlined "
+                    href="https://www.facebook.com/thierry.baudry.547"
                     target="_blank"
                 >
-                    {{reference_site.name}}
+
+                    {% include "components/icon.html" with name='facebook-circle-fill' height="20" width="20" style="margin-bottom: -3px;" %}
+                    thierry.baudry.547
                 </a>
-            {% endfor %}
+                <p class="mt-1">
+                    {% include "components/icon.html" with name='mail-line' height="20" width="20"  style="margin-bottom: -3px;"%}
+                    {{ settings.home.ContactSetting.email }}
+                </p>
+            </div>
+
+            {% if reference_sites|length > 0 %}
+                <div>
+                    <p class="has-text-weight-semibold pb-2">Sites références</p>
+
+                    {% for reference_site in reference_sites %}
+                    <a
+                        class="has-text-white-ter is-underlined pb-1"
+                        href="{{reference_site.link}}"
+                        target="_blank"
+                    >
+                        {{reference_site.name}}
+                    </a>
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if friendly_sites|length > 0 %}
+            <div>
+                <p class="has-text-weight-semibold pb-2">Sites amis</p>
+                {% for friendly_site in friendly_sites %}
+                        <a
+                            class="has-text-white-ter is-underlined pb-1"
+                            href="{{friendly_site.link}}"
+                            target="_blank"
+                        >
+                            {{friendly_site.name}}
+                        </a>
+                    {% endfor %}
+            </div>
+            {% endif %}
+
+
         </div>
-        {% endif %}
-
-
     </div>
 </footer>

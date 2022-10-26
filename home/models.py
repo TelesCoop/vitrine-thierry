@@ -136,41 +136,6 @@ class HomePage(BannerPage):
         verbose_name = "Page d'Accueil"
 
 
-class PresentationPage(RoutablePageMixin, BannerPage):
-    parent_page_types = ["HomePage"]
-    subpage_types: List[str] = []
-    max_count_per_parent = 1
-
-    body = RichTextField(
-        null=True,
-        blank=True,
-        verbose_name="Contenu de la page de présentation",
-    )
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        verbose_name="Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    content_panels = BannerPage.content_panels + [
-        FieldPanel("body"),
-        FieldPanel("image"),
-    ]
-
-    # Admin tabs list (Remove promotion and settings tabs)
-    edit_handler = TabbedInterface([ObjectList(content_panels, heading="Content")])
-
-    def save(self, *args, **kwargs):
-        self.slug = "qui-suis-je"
-        super().save(*args, **kwargs)
-
-    class Meta:
-        verbose_name = "Page de presentation"
-
-
 class WorkExperiencePage(RoutablePageMixin, BannerPage):
     parent_page_types = ["HomePage"]
     subpage_types: List[str] = []
@@ -189,6 +154,10 @@ class WorkExperiencePage(RoutablePageMixin, BannerPage):
                 blocks.StructBlock(
                     [
                         ("title", blocks.CharBlock(label="Titre")),
+                        (
+                            "intro",
+                            blocks.CharBlock(label="Introduction", required=False),
+                        ),
                         (
                             "steps",
                             blocks.ListBlock(
@@ -561,3 +530,19 @@ class BannerSetting(BaseSetting):
 
     class Meta:
         verbose_name = "Banière-image"
+
+
+@register_setting
+class ContactSetting(BaseSetting):
+    email = models.CharField(
+        max_length=128,
+        verbose_name="Email de contact",
+        default="thierry.baudry.glass@wanadoo.fr",
+    )
+
+    panels = [
+        FieldPanel("email"),
+    ]
+
+    class Meta:
+        verbose_name = "Contact"

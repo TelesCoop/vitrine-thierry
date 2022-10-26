@@ -6,22 +6,26 @@
     <div class="container narrow-container">
         {%if page.artist_name%}
         <div class="section">
-            <h1 class="title is-2 has-text-centered">{{ page.artist_name }}</h1>
+            <h1 class="title is-2">{{ page.artist_name }}</h1>
             <div class="mt-6 home__presentation">
                 <div class="rich-text">
                     <p>{{ page.artist_body|richtext }}</p>
                 </div>
+                {% if page.artist_image %}
                 <figure class="image" style="max-height: 500px;">
                     <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image" style="max-height: 500px; height: 100%; object-fit: cover; border-radius: 2%;" loading="lazy">
                 </figure>
+                {% endif %}
             </div>
         </div>
         {% endif %}
         {%if page.artworks_highlight_title%}
         <div class="section">
-            <h2 class="title is-3 has-text-centered">{{ page.artworks_highlight_title }}</h2>
+            <h2 class="title is-3">{{ page.artworks_highlight_title }}</h2>
             {%for artwork in artworks%}
+            <div class="my-4">
                 {% include "components/card-artwork.html" with artworks_page=artworks_page artwork=artwork horizontal=True %}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
