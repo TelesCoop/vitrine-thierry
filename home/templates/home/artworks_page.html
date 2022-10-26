@@ -2,23 +2,32 @@
 {% load wagtailcore_tags wagtailimages_tags wagtailroutablepage_tags %}
 
 {% block content %}
-    <div class="container narrow-container">
+    <div class="container">
         <div class="section">
-            <h1 class="title is-2 has-text-black-ter"> {{ page.title }} </h1>
-            <div class="pb-6">
-                <p class="title is-6">Filtrer par galerie</p>
-                <div id="buttonGallery">
-                    {%for gallery in galleries%}
-                        <button id="gallery-{{gallery.name}}" class="button is-rounded is-outlined is-{{gallery.color}} mx-1" onclick="toggleGallery('{{gallery.name}}')">
-                            {{gallery.name}}
-                        </button>
-                    {% endfor %}
+            <div class="is-flex is-flex-wrap-wrap">
+                <div class="pb-6 pt-3 is-column-3">
+                    <p class="title is-6">Filtrer par galerie</p>
+                    <div class="mobile-gallery-filter">
+                        {%for gallery in galleries%}
+                        <div>
+                            <button
+                            id="gallery-{{gallery.name}}"
+                            class="button is-rounded is-outlined is-{{gallery.color}} my-1 gallery-tag"
+                            onclick="toggleGallery('{{gallery.name}}')">
+                                {{gallery.name}}
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="columns is-6 is-multiline">
-                {%for artwork in artworks %}
-                    {% include "components/card-artwork.html" with artworks_page=artworks_page artwork=artwork %}
-                {% endfor %}
+                <div class="is-column-9">
+                    <h1 class="title is-2 has-text-black-ter"> {{ page.title }} </h1>
+                    <div class="columns is-6 is-multiline">
+                        {%for artwork in artworks %}
+                            {% include "components/card-artwork.html" with artworks_page=artworks_page artwork=artwork %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

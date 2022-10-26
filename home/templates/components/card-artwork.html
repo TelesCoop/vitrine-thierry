@@ -17,7 +17,7 @@ href="{% routablepageurl artworks_page "artwork" artwork.slug %}">
           </div>
           <div class="has-text-left mt-3 is-flex-wrap-wrap" style="gap: 0.5rem;">
               {%for gallery in artwork.galleries.all%}
-              <p class="button is-rounded is-{{gallery.color}}">
+              <p class="button is-rounded is-{{gallery.color}} gallery-tag">
                   {{gallery.name}}
               </p>
               {% endfor %}

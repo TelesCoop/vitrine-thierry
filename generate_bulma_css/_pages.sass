@@ -23,3 +23,29 @@ body
 
 .parcours_block:nth-child(2n)
   background-color: $primary-light
+
+.gallery-tag
+  height: 2em
+
+.is-column-3
+  flex: 0 0 25%
+  max-width: 25%
+  width: 25%
+
+.is-column-9
+  flex: 0 0 75%
+  max-width: 75%
+  width: 75%
+
+@media (max-width: 786px)
+  .is-column-3,
+  .is-column-9
+    flex: 0 0 100%
+    max-width: 100%
+    width: 100%
+
+  .mobile-gallery-filter
+    display: flex
+    flex-direction: row
+    & div:not(:last-child)
+      margin-right: 0.5rem
