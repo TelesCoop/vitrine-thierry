@@ -12,9 +12,8 @@
                     <p>{{ page.artist_body|richtext }}</p>
                 </div>
                 {% if page.artist_image %}
-                <figure class="image" style="max-height: 500px;">
-                    <img src='{{ page.artist_image.file.url }}' alt="Oeuvre image" style="max-height: 500px; height: 100%; object-fit: cover; border-radius: 2%;" loading="lazy">
-                </figure>
+                    {% image page.artist_image height-480 as image %}
+                    <img src="{{ image.url }}" alt="Image de présentation de l'artiste" loading="lazy" style="border-radius: 1%;">
                 {% endif %}
             </div>
         </div>

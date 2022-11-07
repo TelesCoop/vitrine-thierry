@@ -85,6 +85,7 @@ TEMPLATES = [
                 "wagtail.contrib.settings.context_processors.settings",
                 "vitrine_thierry.context_processors.standard_pages",
                 "vitrine_thierry.context_processors.footer_data",
+                "vitrine_thierry.context_processors.banner_data",
             ],
         },
     },

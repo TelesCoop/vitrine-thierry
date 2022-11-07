@@ -5,10 +5,8 @@ class="artwork-filtered {%for gallery in artwork.galleries.all%} {{gallery.name}
 href="{% routablepageurl artworks_page "artwork" artwork.slug %}">
   <div class="card {% if horizontal %} horizontal-card {% else %} vertical-card {% endif %}">
       <div class="card-image">
-          {% image artwork.image min-400x300 as artwork_image %}
-          <figure class="image">
+          {% image artwork.image fill-400x300 as artwork_image %}
             <img src='{{ artwork_image.url }}' alt="Oeuvre image" loading="lazy">
-          </figure>
       </div>
       <div class="card-content is-flex is-flex-direction-column is-justify-content-space-between">
           <div>

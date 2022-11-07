@@ -7,6 +7,7 @@ from home.models import ArticlesPage, HomePage
 LAST_UPDATE: Dict[str, Union[None, datetime.datetime]] = {
     "standard_pages": None,
     "footer_data": None,
+    "banner_data": None,
 }
 
 
@@ -72,6 +73,17 @@ def load_footer_data():
     return dict(footer_data)
 
 
+def load_banner_data():
+    # This cannot be done in the main body of the page, because models
+    # are not yet loaded when this page is imported in the settings.
+    from home.models import BannerSetting
+
+    banner_data = defaultdict()
+    banner_data["banner_image"] = BannerSetting.objects.all().first().navbar_banner
+
+    return dict(banner_data)
+
+
 def standard_pages(_):
     if not is_recent("standard_pages"):
         update_last_change("standard_pages")
@@ -82,3 +94,9 @@ def footer_data(_):
     if not is_recent("footer_data"):
         update_last_change("footer_data")
     return load_footer_data()
+
+
+def banner_data(_):
+    if not is_recent("banner_data"):
+        update_last_change("banner_data")
+    return load_banner_data()

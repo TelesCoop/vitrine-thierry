@@ -1,14 +1,14 @@
 {% load static %}
-{% load wagtailsettings_tags %}
+{% load wagtailsettings_tags wagtailimages_tags %}
 
 <nav class="navbar is-flex-direction-column" role="navigation" aria-label="main navigation">
-    {%if banner_url%}
+    {% if banner_image %}
     <div class"navbar-item">
         <figure class="image" style="height: 270px;">
-            <img src='{{ banner_url }}' alt="Banière image" style="height: 100%; object-fit: cover;">
+            <img src='{{ banner_image.file.url }}' alt="Banière image" style="height: 100%; object-fit: cover;">
         </figure>
     </div>
-    {%endif%}
+    {% endif %}
     <div class="navbar-start mx-auto">
         <a class="navbar-item has-text-white-ter px-5 is-uppercase has-text-weight-medium {% if request.path == home_page.url %}navbar-item-active{% endif %}" href="/">
             {{ home_page.nav_name }}

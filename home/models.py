@@ -50,12 +50,6 @@ class BannerPage(Page):
         FieldPanel("nav_name"),
     ]
 
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
-        navbar_banner = BannerSetting.objects.all().first().navbar_banner
-        context["banner_url"] = navbar_banner.file.url if navbar_banner else ""
-        return context
-
     class Meta:
         abstract = True
 
