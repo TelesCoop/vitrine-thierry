@@ -1,6 +1,6 @@
 from .base import *  # noqa: F403 F401
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = config.getstr("security.secret_key")  # noqa: F405
 ALLOWED_HOSTS = config.getlist("security.allowed_hosts")  # noqa: F405
