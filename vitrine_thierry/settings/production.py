@@ -1,4 +1,5 @@
 from .base import *  # noqa: F403 F401
+import rollbar
 
 DEBUG = False
 
@@ -11,6 +12,7 @@ WAGTAIL_ENABLE_UPDATE_CHECK = False  # Disable update alerts
 
 WAGTAILADMIN_BASE_URL = "https://thierry-baudry.tlscp.fr"
 
+# Mailgun
 ANYMAIL = {
     "MAILGUN_API_KEY": config.getstr("mail.api_key"),  # noqa: F405
     "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
@@ -19,3 +21,17 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = "no-reply@telescoop.fr"
 SERVER_EMAIL = "no-reply@telescoop.fr"
+
+# rollbar
+MIDDLEWARE.append(  # noqa: F405
+    "rollbar.contrib.django.middleware.RollbarNotifierMiddleware"
+)
+
+ROLLBAR = {
+    "access_token": config.getstr("bugs.rollbar_access_token"),  # noqa: F405
+    "environment": "production",
+    "code_version": "1.0",
+    "root": BASE_DIR,  # noqa: F405
+}
+
+rollbar.init(**ROLLBAR)
