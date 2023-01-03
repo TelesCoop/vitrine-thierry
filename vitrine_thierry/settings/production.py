@@ -35,3 +35,10 @@ ROLLBAR = {
 }
 
 rollbar.init(**ROLLBAR)
+
+# BACKUP
+INSTALLED_APPS.append("telescoop_backup")  # noqa: F405
+BACKUP_ACCESS = config.getstr("backup.backup_access", None)  # noqa: F405
+BACKUP_SECRET = config.getstr("backup.backup_secret", None)  # noqa: F405
+BACKUP_BUCKET = config.getstr("backup.backup_bucket", None)  # noqa: F405
+BACKUP_REGION = config.getstr("backup.backup_region", None)  # noqa: F405
