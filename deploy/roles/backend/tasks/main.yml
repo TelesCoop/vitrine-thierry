@@ -135,4 +135,18 @@
     state: restarted
   when: clonecode.changed or force_update is defined
 
-- include: cron.yml
+- name: "daily database backup"
+  cron:
+    user: "{{ main_user }}"
+    name: "daily database backup"
+    hour: '{{ database_backup.hour }}'
+    minute: '{{ database_backup.minute }}'
+    job: "{{ project_slug }}-ctl backup_db backup"
+
+- name: "daily media backup"
+  cron:
+    user: "{{ main_user }}"
+    name: "daily media backup"
+    hour: '{{ database_backup.hour }}'
+    minute: '{{ database_backup.minute }}'
+    job: "{{ project_slug }}-ctl backup_db media"
