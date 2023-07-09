@@ -11,7 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "bulma": "^0.9.3",
-    "node-sass": "^7.0.1"
+    "node-sass": "^9.0.0"
   },
   "dependencies": {
     "minify": "^8.0.4"
