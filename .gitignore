@@ -38,3 +38,4 @@ wheels/
 .installed.cfg
 *.egg
 db.sqlite3-journal
+vault.key
